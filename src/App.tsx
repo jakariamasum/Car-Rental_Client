@@ -1,5 +1,5 @@
-function App() {
+const App = () => {
   return <div>Initial setup</div>;
-}
+};
 
 export default App;
