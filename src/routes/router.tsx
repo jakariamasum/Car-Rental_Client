@@ -5,10 +5,12 @@ import Login from "../pages/login/Login";
 import Register from "../pages/register/Register";
 import AllCars from "../pages/allCars/AllCars";
 import About from "../pages/about/About";
+import Error from "../pages/error/Error";
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <Error />,
     children: [
       {
         path: "/",
