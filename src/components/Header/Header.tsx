@@ -1,7 +1,11 @@
 import { UserCircleIcon } from "@heroicons/react/16/solid";
 import { NavLink } from "react-router-dom";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useAppSelector } from "../../redux/hooks";
 
 const Header = () => {
+  const user = useAppSelector(useCurrentUser);
+  console.log(user);
   return (
     <header className="flex justify-between items-center px-8 py-4 bg-white shadow-md">
       <div className="flex items-center">
@@ -32,40 +36,27 @@ const Header = () => {
           ABOUT
         </NavLink>
         <NavLink
-          to="/inventory"
+          to="/all-cars"
           className={({ isActive }) =>
             isActive ? "text-red-500" : "hover:text-red-500"
           }
         >
-          INVENTORY
+          All Cars
         </NavLink>
-        <NavLink
-          to="/news"
-          className={({ isActive }) =>
-            isActive ? "text-red-500" : "hover:text-red-500"
-          }
-        >
-          NEWS
-        </NavLink>
-        <NavLink
-          to="/contacts"
-          className={({ isActive }) =>
-            isActive ? "text-red-500" : "hover:text-red-500"
-          }
-        >
-          CONTACTS
-        </NavLink>
-        <NavLink
-          to="/login"
-          className={({ isActive }) =>
-            isActive
-              ? "text-red-500 flex gap-1"
-              : "hover:text-red-500 flex gap-1"
-          }
-        >
-          <UserCircleIcon className="h-6 w-6 text-black mr-1" />
-          LOGIN
-        </NavLink>
+
+        {!user && (
+          <NavLink
+            to="/login"
+            className={({ isActive }) =>
+              isActive
+                ? "text-red-500 flex gap-1"
+                : "hover:text-red-500 flex gap-1"
+            }
+          >
+            <UserCircleIcon className="h-6 w-6 text-black mr-1" />
+            LOGIN
+          </NavLink>
+        )}
       </nav>
 
       <div className="flex items-center text-sm">

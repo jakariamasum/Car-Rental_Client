@@ -4,8 +4,9 @@ import { GoArrowUpRight } from "react-icons/go";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import { TbManualGearbox } from "react-icons/tb";
 import { Link } from "react-router-dom";
+import { TCar } from "../featured/Featured";
 
-const CarCard = ({ car }) => {
+const CarCard = ({ car }: { car: TCar }) => {
   return (
     <figure className="relative w-full max-w-sm mx-auto overflow-hidden bg-[#ECEDF3] rounded-lg shadow-lg">
       <img
@@ -45,7 +46,7 @@ const CarCard = ({ car }) => {
           </div>
         </div>
         <div className="p-3 w-full flex justify-between items-center">
-          <p className="text-xl font-bold text-black">${car?.price}</p>
+          <p className="text-xl font-bold text-black">${car?.pricePerHour}</p>
           <Link to={`/details/${car?._id}`}>
             <button className="text-sub font-semibold text-[18px] hover:text-red-500 duration-500 flex justify-center items-center gap-1">
               See Details <GoArrowUpRight />

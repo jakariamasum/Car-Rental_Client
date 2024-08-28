@@ -1,53 +1,31 @@
+import { Link } from "react-router-dom";
+import { useGetAllCarsQuery } from "../../redux/features/cars/carsApi";
 import CarCard from "../cardCard/CarCard";
-
-const cars = [
-  {
-    id: 1,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Peugeot 508 Sports",
-    year: "2019",
-    mileage: "2000",
-    fuelType: "Petrol+CNG",
-    transmission: "Manual",
-    price: 44,
-  },
-  {
-    id: 2,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Toyota Corolla",
-    year: "2021",
-    mileage: "1500",
-    fuelType: "Petrol",
-    transmission: "Automatic",
-    price: 50,
-  },
-  {
-    id: 3,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Honda Civic",
-    year: "2020",
-    mileage: "1800",
-    fuelType: "Petrol",
-    transmission: "Manual",
-    price: 48,
-  },
-  {
-    id: 4,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Space X",
-    year: "2020",
-    mileage: "1800",
-    fuelType: "Petrol",
-    transmission: "Manual",
-    price: 48,
-  },
-];
+export type TCar = {
+  _id: string;
+  name: string;
+  description: string;
+  color: string;
+  isElectric: boolean;
+  status: "available" | "unavailable";
+  features: string[];
+  pricePerHour: number;
+  isDeleted: boolean;
+  image: string;
+  year: string;
+  mileage: string;
+  fuelType: string;
+  transmission: string;
+};
 
 const Featured = () => {
+  const { data, isLoading } = useGetAllCarsQuery(undefined);
+  const cars: TCar[] = data?.data;
+  const featured = cars?.slice(0, 6);
+
+  if (isLoading) {
+    return <p>Loading.....</p>;
+  }
   return (
     <div className=" flex flex-col justify-center items-center gap-4 container mx-auto p-5">
       <h2 className="text-3xl md:text-5xl capitalize  font-semibold text-center">
@@ -57,11 +35,17 @@ const Featured = () => {
         A friendly collection for you. You can have a look and choose the best
         for you.
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 w-full mt-10">
-        {cars.map((car) => (
-          <CarCard key={car.id} car={car} />
+      <div className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 w-full mt-10">
+        {featured?.map((car: TCar) => (
+          <CarCard key={car._id} car={car} />
         ))}
       </div>
+      <Link
+        to="/all-cars"
+        className="px-6 rounded-md py-2 mt-2 bg-purple-500 text-white hover:bg-black"
+      >
+        See more
+      </Link>
     </div>
   );
 };
