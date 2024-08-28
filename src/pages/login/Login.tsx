@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useAppDispatch } from "../../redux/hooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
@@ -131,28 +131,28 @@ const Login: React.FC = () => {
         </form>
 
         <p className="text-center mt-4">
-          <a
-            href="/forgot-password"
+          <Link
+            to="/forgot-password"
             className="text-purple-500 hover:underline"
           >
             Forgot Password?
-          </a>
+          </Link>
         </p>
 
         <p className="text-center mt-2">
           Don’t have an account?{" "}
-          <a href="/sign-up" className="text-purple-500 hover:underline">
+          <Link to="/register" className="text-purple-500 hover:underline">
             Sign Up Instead
-          </a>
+          </Link>
         </p>
 
         <div className="flex justify-center mt-6 text-sm text-gray-600">
-          <a href="/privacy-policy" className="mr-4 hover:underline">
+          <Link to="/privacy-policy" className="mr-4 hover:underline">
             Privacy Policy
-          </a>
-          <a href="/terms-of-service" className="hover:underline">
+          </Link>
+          <Link to="/terms-of-service" className="hover:underline">
             Terms of Service
-          </a>
+          </Link>
         </div>
       </div>
     </div>
