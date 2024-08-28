@@ -1,6 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
+import { useAppDispatch } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { verifyToken } from "../../utils/verifyToken";
 
 interface LoginFormInputs {
   email: string;
@@ -16,8 +23,20 @@ const Login: React.FC = () => {
   const [emailFocused, setEmailFocused] = useState<boolean>(false);
   const [passwordFocused, setPasswordFocused] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    console.log(data);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [login] = useLoginMutation();
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    const toastId = toast.loading("Logging in");
+    try {
+      const res = await login(data).unwrap();
+      const user = verifyToken(res.token) as TUser;
+      dispatch(setUser({ user: user, token: res.token }));
+      toast.success("Logged in", { id: toastId, duration: 2000 });
+      navigate(`/`);
+    } catch (err) {
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    }
   };
 
   return (
