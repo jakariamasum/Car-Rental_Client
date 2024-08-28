@@ -9,6 +9,7 @@ import Error from "../pages/error/Error";
 import UserDashboard from "../components/layout/userLayout/UserDashboardLayout";
 import Overview from "../pages/overview/Overview";
 import UpdateProfile from "../pages/updateProfile/UpdateProfile";
+import Booking from "../pages/booking/Booking";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "update-profile",
         element: <UpdateProfile />,
+      },
+      {
+        path: "booking",
+        element: <Booking />,
       },
     ],
   },
