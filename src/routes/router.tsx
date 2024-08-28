@@ -6,6 +6,9 @@ import Register from "../pages/register/Register";
 import AllCars from "../pages/allCars/AllCars";
 import About from "../pages/about/About";
 import Error from "../pages/error/Error";
+import UserDashboard from "../components/layout/userLayout/UserDashboardLayout";
+import Overview from "../pages/overview/Overview";
+import UpdateProfile from "../pages/updateProfile/UpdateProfile";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -31,6 +34,20 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+    ],
+  },
+  {
+    path: "dashboard",
+    element: <UserDashboard />,
+    children: [
+      {
+        path: "overview",
+        element: <Overview />,
+      },
+      {
+        path: "update-profile",
+        element: <UpdateProfile />,
       },
     ],
   },
