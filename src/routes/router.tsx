@@ -10,6 +10,7 @@ import UserDashboard from "../components/layout/userLayout/UserDashboardLayout";
 import Overview from "../pages/overview/Overview";
 import UpdateProfile from "../pages/updateProfile/UpdateProfile";
 import Booking from "../pages/booking/Booking";
+import Payment from "../pages/payment/Payment";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
       {
         path: "booking",
         element: <Booking />,
+      },
+      {
+        path: "payment",
+        element: <Payment />,
       },
     ],
   },
