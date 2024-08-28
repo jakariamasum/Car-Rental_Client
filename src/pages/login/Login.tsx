@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
 import { useAppDispatch } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -26,112 +25,135 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [login] = useLoginMutation();
+
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
-    const toastId = toast.loading("Logging in");
+    const toastId = toast.loading("Logging in...");
     try {
       const res = await login(data).unwrap();
       const user = verifyToken(res.token) as TUser;
       dispatch(setUser({ user: user, token: res.token }));
-      toast.success("Logged in", { id: toastId, duration: 2000 });
-      navigate(`/`);
+      toast.success("Logged in successfully!", { id: toastId, duration: 2000 });
+      navigate(`/dashboard`);
     } catch (err) {
-      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      toast.error("Incorrect email or password. Please try again.", {
+        id: toastId,
+        duration: 2000,
+      });
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen  bg-gray-100">
-      <div className="max-w-md w-full mx-4 p-8 bg-white rounded-2xl shadow-lg transform transition duration-500 hover:scale-105">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="max-w-md w-full mx-4 p-10 bg-white rounded-xl shadow-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Welcome Back
+          Sign In
         </h2>
-
-        <div className="flex flex-col space-y-3 mb-6">
-          <button className="flex items-center justify-center w-full py-2 px-4 bg-purple-600 text-white rounded-md transition">
-            <FaGoogle className="mr-2" /> Continue with Google
-          </button>
-        </div>
-
-        <div className="relative mb-6">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative text-center">
-            <span className="bg-white px-3 text-gray-500">or</span>
-          </div>
-        </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="relative">
             <input
-              {...register("email", { required: true })}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Invalid email address",
+                },
+              })}
               type="email"
               id="email"
               onFocus={() => setEmailFocused(true)}
               onBlur={(e) => setEmailFocused(!!e.target.value)}
-              className={`w-full px-4 py-3 border-b-2 text-lg bg-transparent ${
-                emailFocused || !!errors.email
+              placeholder=" "
+              className={`w-full px-4 py-3 border rounded-md ${
+                errors.email
+                  ? "border-red-500"
+                  : emailFocused
                   ? "border-purple-500"
                   : "border-gray-300"
-              } focus:outline-none transition duration-300 ease-in-out`}
+              } focus:outline-none transition duration-300`}
             />
             <label
               htmlFor="email"
-              className={`absolute left-4 text-lg font-medium transition-all duration-300 ${
-                emailFocused || !!errors.email
-                  ? "-top-3 text-sm text-purple-500"
-                  : "top-3 text-gray-500"
+              className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
+                emailFocused || errors.email
+                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  : "top-3"
               }`}
             >
-              Email
+              Email Address
             </label>
             {errors.email && (
-              <p className="text-red-500 text-sm mt-2">Email is required</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div className="relative">
             <input
-              {...register("password", { required: true })}
+              {...register("password", { required: "Password is required" })}
               type="password"
               id="password"
               onFocus={() => setPasswordFocused(true)}
               onBlur={(e) => setPasswordFocused(!!e.target.value)}
-              className={`w-full px-4 py-3 border-b-2 text-lg bg-transparent ${
-                passwordFocused || !!errors.password
+              placeholder=" "
+              className={`w-full px-4 py-3 border rounded-md ${
+                errors.password
+                  ? "border-red-500"
+                  : passwordFocused
                   ? "border-purple-500"
                   : "border-gray-300"
-              } focus:outline-none transition duration-300 ease-in-out`}
+              } focus:outline-none transition duration-300`}
             />
             <label
               htmlFor="password"
-              className={`absolute left-4 text-lg font-medium transition-all duration-300 ${
-                passwordFocused || !!errors.password
-                  ? "-top-3 text-sm text-purple-500"
-                  : "top-3 text-gray-500"
+              className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
+                passwordFocused || errors.password
+                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  : "top-3"
               }`}
             >
               Password
             </label>
             {errors.password && (
-              <p className="text-red-500 text-sm mt-2">Password is required</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 text-lg font-semibold bg-purple-500 text-white rounded-md shadow-md hover:bg-purple-600 transition duration-300 ease-in-out"
+            className="w-full py-3 text-lg font-semibold bg-purple-500 text-white rounded-md shadow-md hover:bg-purple-600 transition duration-300"
           >
-            Login
+            Sign In
           </button>
         </form>
 
-        <p className="text-center mt-6 text-gray-600">
-          Don’t have an account?{" "}
-          <a href="#" className="text-purple-500 hover:underline">
-            Sign Up
+        <p className="text-center mt-4">
+          <a
+            href="/forgot-password"
+            className="text-purple-500 hover:underline"
+          >
+            Forgot Password?
           </a>
         </p>
+
+        <p className="text-center mt-2">
+          Don’t have an account?{" "}
+          <a href="/sign-up" className="text-purple-500 hover:underline">
+            Sign Up Instead
+          </a>
+        </p>
+
+        <div className="flex justify-center mt-6 text-sm text-gray-600">
+          <a href="/privacy-policy" className="mr-4 hover:underline">
+            Privacy Policy
+          </a>
+          <a href="/terms-of-service" className="hover:underline">
+            Terms of Service
+          </a>
+        </div>
       </div>
     </div>
   );
