@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAppDispatch } from "../../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { setUser, TUser } from "../../redux/features/auth/authSlice";
-import { verifyToken } from "../../utils/verifyToken";
+import { useSignupMutation } from "../../redux/features/signup/signUp";
 
 interface SignUpFormInputs {
   name: string;
@@ -29,9 +26,8 @@ const Register: React.FC = () => {
   const [confirmPasswordFocused, setConfirmPasswordFocused] =
     useState<boolean>(false);
 
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // const [signUp] = useSignUpMutation();
+  const [signUp] = useSignupMutation();
 
   const onSubmit: SubmitHandler<SignUpFormInputs> = async (data) => {
     if (!data.terms) {
@@ -42,12 +38,13 @@ const Register: React.FC = () => {
     const toastId = toast.loading("Signing up...");
     try {
       console.log(data);
-      // const res = await signUp(data).unwrap();
-      // const user = verifyToken(res.token) as TUser;
-      // dispatch(setUser({ user: user, token: res.token }));
-      // toast.success("Signed up successfully!", { id: toastId, duration: 2000 });
-      // navigate(`/login`);
+      const signUpData = { ...data, role: "user" };
+      const res = await signUp(signUpData).unwrap();
+      console.log(res);
+      toast.success("Signed up successfully!", { id: toastId, duration: 2000 });
+      navigate(`/login`);
     } catch (err) {
+      console.log(err);
       toast.error("Error signing up. Please try again.", {
         id: toastId,
         duration: 2000,
