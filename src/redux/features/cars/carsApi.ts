@@ -8,7 +8,13 @@ export const carsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getSingleCar: builder.query({
+      query: (id: string) => ({
+        url: `/cars/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllCarsQuery } = carsApi;
+export const { useGetAllCarsQuery, useGetSingleCarQuery } = carsApi;

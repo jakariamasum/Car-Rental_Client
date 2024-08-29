@@ -11,6 +11,7 @@ import Overview from "../pages/overview/Overview";
 import UpdateProfile from "../pages/updateProfile/UpdateProfile";
 import Booking from "../pages/booking/Booking";
 import Payment from "../pages/payment/Payment";
+import CarDetails from "../pages/carDetails/CarDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         element: <About />,
+      },
+      {
+        path: "details/:id",
+        element: <CarDetails />,
       },
     ],
   },
