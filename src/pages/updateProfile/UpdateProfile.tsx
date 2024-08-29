@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
+import { useAppSelector } from "../../redux/hooks";
+import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+import {
+  useGetSingleUserQuery,
+  useUpdateUserMutation,
+} from "../../redux/features/auth/authApi";
 
-interface UpdateProfileInputs {
+export interface UpdateProfileInputs {
   name: string;
   email: string;
   password: string;
@@ -10,15 +16,42 @@ interface UpdateProfileInputs {
 }
 
 const UpdateProfile: React.FC = () => {
+  const user = useAppSelector(useCurrentUser);
+  const { data } = useGetSingleUserQuery(user?.email);
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<UpdateProfileInputs>();
+  } = useForm<UpdateProfileInputs>({
+    defaultValues: {
+      name: data?.data?.name,
+      email: data?.data?.email,
+      phone: data?.data?.phone,
+    },
+  });
+  const [updateProfile] = useUpdateUserMutation();
+  useEffect(() => {
+    if (data && data.data) {
+      setValue("name", data.data.name || "");
+      setValue("email", data.data.email || "");
+      setValue("phone", data.data.phone || "");
+    }
+  }, [data, setValue]);
 
-  const onSubmit: SubmitHandler<UpdateProfileInputs> = async (data) => {
-    console.log("Profile updated:", data);
-    toast.success("Profile updated successfully!");
+  const onSubmit: SubmitHandler<UpdateProfileInputs> = async (formData) => {
+    console.log("Profile updated:", formData);
+    try {
+      const response = await updateProfile({
+        id: user?.email as string,
+        data: formData,
+      }).unwrap();
+      console.log(response);
+      toast.success("Profile updated successfully!");
+    } catch (error) {
+      toast.error("Profile updated failed!");
+      console.log(error);
+    }
   };
 
   return (
@@ -31,7 +64,7 @@ const UpdateProfile: React.FC = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="relative">
             <input
-              {...register("name", { required: "Name is required" })}
+              {...register("name")}
               type="text"
               id="name"
               placeholder=" "
@@ -43,9 +76,6 @@ const UpdateProfile: React.FC = () => {
             >
               Name
             </label>
-            {errors.name && (
-              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-            )}
           </div>
 
           <div className="relative">
@@ -60,7 +90,8 @@ const UpdateProfile: React.FC = () => {
               type="email"
               id="email"
               placeholder=" "
-              className="w-full px-4 py-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-300"
+              readOnly
+              className="w-full px-4 py-3 border rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 transition duration-300 bg-gray-100"
             />
             <label
               htmlFor="email"
@@ -68,16 +99,11 @@ const UpdateProfile: React.FC = () => {
             >
               Email Address
             </label>
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
           </div>
 
           <div className="relative">
             <input
-              {...register("password", { required: "Password is required" })}
+              {...register("password")}
               type="password"
               id="password"
               placeholder=" "
@@ -89,11 +115,6 @@ const UpdateProfile: React.FC = () => {
             >
               Password
             </label>
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
           </div>
 
           <div className="relative">

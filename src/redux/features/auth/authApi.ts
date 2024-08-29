@@ -1,3 +1,4 @@
+import { UpdateProfileInputs } from "../../../pages/updateProfile/UpdateProfile";
 import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
@@ -9,7 +10,27 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    getSingleUser: builder.query({
+      query: (id) => ({
+        url: `/auth/${id}`,
+        method: "GET",
+      }),
+    }),
+    updateUser: builder.mutation<
+      UpdateProfileInputs,
+      { id: string; data: Partial<UpdateProfileInputs> }
+    >({
+      query: ({ id, data }) => ({
+        url: `/auth/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = authApi;
+export const {
+  useLoginMutation,
+  useGetSingleUserQuery,
+  useUpdateUserMutation,
+} = authApi;
