@@ -21,7 +21,8 @@ const Error: React.FC<ErrorPageProps> = ({
       <h2 className="text-2xl font-semibold mb-2 text-gray-800">
         Oops! Something went wrong.
       </h2>
-      <p className="text-lg text-gray-600 mb-8">{message}</p>
+      <p className="text-lg text-gray-600 mb-2">{message}</p>
+      <img src="/error_photo.svg" alt="error_photo" className="h-96 w-96" />
 
       <div className="flex justify-center space-x-4">
         <button
