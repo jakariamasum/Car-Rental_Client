@@ -68,7 +68,7 @@ const Offers = () => {
     <div className="bg-gray-100 py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-8">
-          Services We <span className="text-red-600">Offer</span>
+          Services We <span className="text-red-500">Offer</span>
         </h2>
         <div className="flex flex-col  justify-center items-center">
           <div className="flex flex-wrap justify-center md:justify-start mb-4 ">
@@ -77,9 +77,9 @@ const Offers = () => {
                 key={tab.id}
                 className={`cursor-pointer p-4 text-center border ${
                   activeTab === tab.id
-                    ? "bg-red-600 text-white"
+                    ? "bg-red-500 text-white"
                     : "bg-white text-gray-800"
-                } hover:bg-red-600 hover:text-white transition-colors`}
+                } hover:bg-red-500 hover:text-white transition-colors`}
                 onClick={() => setActiveTab(tab.id)}
               >
                 <div className="text-2xl">{tab.icon}</div>
