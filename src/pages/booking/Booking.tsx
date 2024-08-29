@@ -34,20 +34,20 @@ const Booking: React.FC = () => {
   };
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen">
+    <div className="p-3 lg:p-8 bg-gray-50 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-8">
         <h2 className="text-4xl font-bold mb-8 text-gray-800 border-b-2 border-gray-200 pb-4">
           Booking Management
         </h2>
 
-        <div className="flex justify-around mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 mb-6">
           {["pending", "approved", "completed"].map((status) => (
             <button
               key={status}
               onClick={() =>
                 setActiveTab(status as "pending" | "approved" | "completed")
               }
-              className={`px-6 py-2 rounded-lg font-semibold transition duration-300 focus:outline-none ${
+              className={`px-3 lg:px-6 w-fit py-2 rounded-lg font-semibold transition duration-300 focus:outline-none ${
                 activeTab === status
                   ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-blue-100"
