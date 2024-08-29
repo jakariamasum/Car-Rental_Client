@@ -14,6 +14,7 @@ import Payment from "../pages/payment/Payment";
 import CarDetails from "../pages/carDetails/CarDetails";
 import AllUser from "../pages/alluser/AllUser";
 import ManageBooking from "../pages/manageBooking/ManageBooking";
+import AllBookings from "../pages/allBookings/AllBookings";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -77,8 +78,12 @@ export const router = createBrowserRouter([
         element: <AllUser />,
       },
       {
-        path: "bookings",
+        path: "manage-bookings",
         element: <ManageBooking />,
+      },
+      {
+        path: "bookings",
+        element: <AllBookings />,
       },
     ],
   },
