@@ -12,6 +12,7 @@ import UpdateProfile from "../pages/updateProfile/UpdateProfile";
 import Booking from "../pages/booking/Booking";
 import Payment from "../pages/payment/Payment";
 import CarDetails from "../pages/carDetails/CarDetails";
+import AllUser from "../pages/alluser/AllUser";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -63,6 +64,16 @@ export const router = createBrowserRouter([
       {
         path: "payment",
         element: <Payment />,
+      },
+    ],
+  },
+  {
+    path: "admin",
+    element: <UserDashboard />,
+    children: [
+      {
+        path: "users",
+        element: <AllUser />,
       },
     ],
   },

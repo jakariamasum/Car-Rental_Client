@@ -10,6 +10,12 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    getAllUsers: builder.query({
+      query: () => ({
+        url: `/auth`,
+        method: "GET",
+      }),
+    }),
     getSingleUser: builder.query({
       query: (id) => ({
         url: `/auth/${id}`,
@@ -32,5 +38,6 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useLoginMutation,
   useGetSingleUserQuery,
+  useGetAllUsersQuery,
   useUpdateUserMutation,
 } = authApi;
