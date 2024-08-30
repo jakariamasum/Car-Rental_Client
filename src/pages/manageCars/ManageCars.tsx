@@ -18,6 +18,7 @@ export type TCar = {
   mileage: string;
   fuelType: string;
   transmission: string;
+  isElectric: boolean;
 };
 
 const ManageCars: React.FC = () => {

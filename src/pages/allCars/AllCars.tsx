@@ -1,73 +1,34 @@
 import React, { useState } from "react";
 import CarCard from "../../components/cardCard/CarCard";
-
-interface Car {
-  id: number;
-  image: string;
-  name: string;
-  year: string;
-  mileage: string;
-  fuelType: string;
-  transmission: string;
-  price: number;
-}
-
-const carData: Car[] = [
-  {
-    id: 1,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Peugeot 508 Sports",
-    year: "2019",
-    mileage: "2000",
-    fuelType: "Petrol+CNG",
-    transmission: "Manual",
-    price: 44,
-  },
-  {
-    id: 2,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Toyota Corolla",
-    year: "2021",
-    mileage: "1500",
-    fuelType: "Petrol",
-    transmission: "Automatic",
-    price: 50,
-  },
-  {
-    id: 3,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Honda Civic",
-    year: "2020",
-    mileage: "1800",
-    fuelType: "Petrol",
-    transmission: "Manual",
-    price: 48,
-  },
-  {
-    id: 4,
-    image:
-      "https://i.ibb.co/PtPmWcD/photo-1519641471654-76ce0107ad1b-w-500-auto-format-fit-crop-q-60-ixlib-rb-4-0.jpg",
-    name: "Space X",
-    year: "2020",
-    mileage: "1800",
-    fuelType: "Petrol",
-    transmission: "Manual",
-    price: 48,
-  },
-];
+import { useGetAllCarsQuery } from "../../redux/features/cars/carsApi";
+import { TCar } from "../manageCars/ManageCars";
+type TType = { _id: string; type: string };
 
 const AllCars: React.FC = () => {
+  const { data, isLoading } = useGetAllCarsQuery(undefined);
+  const carData: TCar[] = data?.data;
+  const types = carData?.reduce<TType[]>((acc, car) => {
+    if (car.fuelType && !acc.some((item) => item.type === car.fuelType)) {
+      acc.push({
+        _id: car._id,
+        type: car.fuelType,
+      });
+    }
+    return acc;
+  }, []);
+
   const [carType, setCarType] = useState<string>("All");
   const [priceRange, setPriceRange] = useState<number>(50000);
 
+  if (isLoading) {
+    return <>Loading........</>;
+  }
+
   const filteredCars = carData.filter(
-    (car) =>
+    (car: TCar) =>
       (carType === "All" ||
         car.fuelType.toLocaleLowerCase() === carType.toLocaleLowerCase()) &&
-      car.price <= priceRange
+      car.pricePerHour <= priceRange
   );
 
   return (
@@ -84,9 +45,11 @@ const AllCars: React.FC = () => {
               onChange={(e) => setCarType(e.target.value)}
             >
               <option value="All">All</option>
-              <option value="Petrol">Petrol</option>
-              <option value="CNG">CNG</option>
-              <option value="Gas">Gas</option>
+              {types?.map((type) => (
+                <option key={type._id} value={type.type}>
+                  {type.type}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -96,16 +59,16 @@ const AllCars: React.FC = () => {
             </label>
             <input
               type="range"
-              min="10000"
-              max="50000"
+              min="10"
+              max="500"
               value={priceRange}
               onChange={(e) => setPriceRange(parseInt(e.target.value))}
               className="w-full cursor-pointer"
             />
             <div className="flex justify-between text-sm text-gray-600 mt-1">
-              <span>$10,000</span>
+              <span>$10</span>
               <span>${priceRange}</span>
-              <span>$50,000</span>
+              <span>$500</span>
             </div>
           </div>
         </aside>
@@ -116,7 +79,7 @@ const AllCars: React.FC = () => {
           </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCars.map((car) => (
-              <CarCard key={car.id} car={car} />
+              <CarCard key={car._id} car={car} />
             ))}
           </div>
         </main>

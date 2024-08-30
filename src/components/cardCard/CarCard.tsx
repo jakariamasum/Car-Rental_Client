@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { TCar } from "../featured/Featured";
 
 const CarCard = ({ car }: { car: TCar }) => {
+  console.log(car);
   return (
     <figure className="relative w-full max-w-sm mx-auto overflow-hidden bg-[#ECEDF3] rounded-lg shadow-lg">
       <img
