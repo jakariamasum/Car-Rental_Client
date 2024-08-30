@@ -17,6 +17,7 @@ import AllBookings from "../pages/admin/AllBookings";
 import ManageCars from "../pages/admin/ManageCars";
 import PrivateRoute from "./PrivateRoute";
 import CarDetails from "../pages/CarDetails";
+import MakeBooking from "../pages/user/MakeBooking";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: "booking",
         element: <Booking />,
+      },
+      {
+        path: "make-booking",
+        element: <MakeBooking />,
       },
       {
         path: "payment",

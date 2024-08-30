@@ -14,7 +14,17 @@ export const carsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    getCarsBySearch: builder.query({
+      query: (searchTerm: string) => ({
+        url: `/cars/search/${searchTerm}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetAllCarsQuery, useGetSingleCarQuery } = carsApi;
+export const {
+  useGetAllCarsQuery,
+  useGetSingleCarQuery,
+  useGetCarsBySearchQuery,
+} = carsApi;
