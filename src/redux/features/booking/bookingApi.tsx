@@ -27,6 +27,13 @@ const bookingApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateBooking: builder.mutation({
+      query: ({ id, data }: { id: string; data: Partial<TBooking> }) => ({
+        url: `/bookings/my-bookings/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -34,4 +41,5 @@ export const {
   useGetAllBookingsQuery,
   useCreateBookingMutation,
   useGetUserBookingsQuery,
+  useUpdateBookingMutation,
 } = bookingApi;
