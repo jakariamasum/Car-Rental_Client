@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { setUser, TUser } from "../../redux/features/auth/authSlice";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
-import { verifyToken } from "../../utils/verifyToken";
+import { setUser, TUser } from "../redux/features/auth/authSlice";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import { verifyToken } from "../utils/verifyToken";
 
 interface LoginFormInputs {
   email: string;

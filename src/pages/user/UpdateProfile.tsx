@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "sonner";
 import { useAppSelector } from "../../redux/hooks";
-import { TUser, useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import {
   useGetSingleUserQuery,
   useUpdateUserMutation,
@@ -18,12 +18,7 @@ export interface UpdateProfileInputs {
 const UpdateProfile: React.FC = () => {
   const user = useAppSelector(useCurrentUser);
   const { data } = useGetSingleUserQuery(user?.email);
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<UpdateProfileInputs>({
+  const { register, handleSubmit, setValue } = useForm<UpdateProfileInputs>({
     defaultValues: {
       name: data?.data?.name,
       email: data?.data?.email,

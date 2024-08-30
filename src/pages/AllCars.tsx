@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import CarCard from "../../components/cardCard/CarCard";
-import { useGetAllCarsQuery } from "../../redux/features/cars/carsApi";
-import { TCar } from "../manageCars/ManageCars";
+import CarCard from "../components/cardCard/CarCard";
+import { useGetAllCarsQuery } from "../redux/features/cars/carsApi";
+import { TCar } from "./admin/ManageCars";
 type TType = { _id: string; type: string };
 
 const AllCars: React.FC = () => {

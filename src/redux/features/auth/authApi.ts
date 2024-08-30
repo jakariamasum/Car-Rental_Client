@@ -1,4 +1,4 @@
-import { UpdateProfileInputs } from "../../../pages/updateProfile/UpdateProfile";
+import { UpdateProfileInputs } from "../../../pages/user/UpdateProfile";
 import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({

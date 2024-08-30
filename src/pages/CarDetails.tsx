@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGetSingleCarQuery } from "../../redux/features/cars/carsApi";
+import { useGetSingleCarQuery } from "../redux/features/cars/carsApi";
 
 const CarDetails: React.FC = () => {
   const { id } = useParams();

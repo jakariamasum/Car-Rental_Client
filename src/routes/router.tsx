@@ -1,22 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../components/layout/MainLayout";
-import Home from "../pages/home/Home";
-import Login from "../pages/login/Login";
-import Register from "../pages/register/Register";
-import AllCars from "../pages/allCars/AllCars";
-import About from "../pages/about/About";
-import Error from "../pages/error/Error";
+import Home from "../pages/Home";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import AllCars from "../pages/AllCars";
+import About from "../pages/About";
+import Error from "../pages/Error";
 import UserDashboard from "../components/layout/userLayout/UserDashboardLayout";
-import Overview from "../pages/overview/Overview";
-import UpdateProfile from "../pages/updateProfile/UpdateProfile";
-import Booking from "../pages/booking/Booking";
-import Payment from "../pages/payment/Payment";
-import CarDetails from "../pages/carDetails/CarDetails";
-import AllUser from "../pages/alluser/AllUser";
-import ManageBooking from "../pages/manageBooking/ManageBooking";
-import AllBookings from "../pages/allBookings/AllBookings";
-import ManageCars from "../pages/manageCars/ManageCars";
+import Overview from "../pages/user/Overview";
+import UpdateProfile from "../pages/user/UpdateProfile";
+import Booking from "../pages/user/Booking";
+import Payment from "../pages/user/Payment";
+import AllUser from "../pages/admin/AllUser";
+import ManageBooking from "../pages/admin/ManageBooking";
+import AllBookings from "../pages/admin/AllBookings";
+import ManageCars from "../pages/admin/ManageCars";
 import PrivateRoute from "./PrivateRoute";
+import CarDetails from "../pages/CarDetails";
 export const router = createBrowserRouter([
   {
     path: "/",
