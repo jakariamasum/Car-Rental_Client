@@ -16,6 +16,7 @@ import AllUser from "../pages/alluser/AllUser";
 import ManageBooking from "../pages/manageBooking/ManageBooking";
 import AllBookings from "../pages/allBookings/AllBookings";
 import ManageCars from "../pages/manageCars/ManageCars";
+import PrivateRoute from "./PrivateRoute";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -49,9 +50,17 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "dashboard",
-    element: <UserDashboard />,
+    path: "user",
+    element: (
+      <PrivateRoute>
+        <UserDashboard />
+      </PrivateRoute>
+    ),
     children: [
+      {
+        path: "dashboard",
+        element: <>User dashboard</>,
+      },
       {
         path: "overview",
         element: <Overview />,
@@ -72,8 +81,16 @@ export const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <UserDashboard />,
+    element: (
+      <PrivateRoute>
+        <UserDashboard />
+      </PrivateRoute>
+    ),
     children: [
+      {
+        path: "dashboard",
+        element: <>Admin dashboard</>,
+      },
       {
         path: "users",
         element: <AllUser />,

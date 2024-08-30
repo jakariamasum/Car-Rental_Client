@@ -17,7 +17,7 @@ const Sidebar: React.FC = () => {
       <ul>
         <li className="mb-4">
           <Link
-            to="/dashboard/overview"
+            to="/user/overview"
             className="block py-2 px-4 rounded hover:bg-gray-700"
           >
             Overview
@@ -25,7 +25,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li className="mb-4">
           <Link
-            to="/dashboard/booking"
+            to="/user/booking"
             className="block py-2 px-4 rounded hover:bg-gray-700"
           >
             Booking Management
@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
         </li>
         <li className="mb-4">
           <Link
-            to="/dashboard/payment"
+            to="/user/payment"
             className="block py-2 px-4 rounded hover:bg-gray-700"
           >
             Payment Management

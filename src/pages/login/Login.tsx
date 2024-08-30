@@ -33,7 +33,7 @@ const Login: React.FC = () => {
       const user = verifyToken(res.token) as TUser;
       dispatch(setUser({ user: user, token: res.token }));
       toast.success("Logged in successfully!", { id: toastId, duration: 2000 });
-      navigate(`/dashboard`);
+      navigate(`/${user?.role}/dashboard`);
     } catch (err) {
       toast.error("Incorrect email or password. Please try again.", {
         id: toastId,
