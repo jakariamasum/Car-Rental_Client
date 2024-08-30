@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrashAlt, FaCheckCircle, FaClock } from "react-icons/fa";
 import {
+  useDeleteBookingMutation,
   useGetUserBookingsQuery,
   useUpdateBookingMutation,
 } from "../../redux/features/booking/bookingApi";
 import { toast } from "sonner";
+import ConfirmAlert from "../../components/confirmalert/ConfirmAlert";
 
 type TBooking = {
   _id: string;
@@ -19,12 +21,13 @@ type TBooking = {
 const Booking: React.FC = () => {
   const { data: bookingData, isLoading: bookingLoading } =
     useGetUserBookingsQuery(undefined);
-
+  const [deleteBooking] = useDeleteBookingMutation();
   const [activeTab, setActiveTab] = useState<string>("pending");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedBooking, setSelectedBooking] = useState<TBooking | null>(null);
   const [editBookingDate, setEditBookingDate] = useState<string>("");
   const [editBookTime, setEditBookTime] = useState<string>("");
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const bookings: TBooking[] = bookingData?.data || [];
 
@@ -39,8 +42,23 @@ const Booking: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleCancel = (id: string) => {
-    console.log("Cancel booking:", id);
+  const handleCancel = (booking: TBooking) => {
+    setSelectedBooking(booking);
+    setShowConfirm(true);
+  };
+
+  const confirmReturnCar = async () => {
+    if (selectedBooking) {
+      try {
+        await deleteBooking(selectedBooking._id);
+        toast.success("Deleted successfully!!");
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed");
+      }
+      setShowConfirm(false);
+      setSelectedBooking(null);
+    }
   };
   const [updateBooking] = useUpdateBookingMutation();
 
@@ -138,7 +156,7 @@ const Booking: React.FC = () => {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleCancel(booking._id)}
+                      onClick={() => handleCancel(booking)}
                       className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-300"
                     >
                       <FaTrashAlt />
@@ -194,6 +212,14 @@ const Booking: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+      {showConfirm && (
+        <ConfirmAlert
+          title="Confirm"
+          message="Are you sure?"
+          onConfirm={confirmReturnCar}
+          onCancel={() => setShowConfirm(false)}
+        />
       )}
     </div>
   );
