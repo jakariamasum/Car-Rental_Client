@@ -31,6 +31,11 @@ const AllCars: React.FC = () => {
       car.pricePerHour <= priceRange
   );
 
+  const prices = carData?.map((car) => car.pricePerHour) || [];
+
+  const maxPrice = prices.length > 0 ? Math.max(...prices) : undefined;
+  const minPrice = prices.length > 0 ? Math.min(...prices) : undefined;
+
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="container mx-auto flex flex-col lg:flex-row">
@@ -59,24 +64,21 @@ const AllCars: React.FC = () => {
             </label>
             <input
               type="range"
-              min="10"
-              max="500"
+              min={minPrice}
+              max={maxPrice}
               value={priceRange}
               onChange={(e) => setPriceRange(parseInt(e.target.value))}
               className="w-full cursor-pointer"
             />
             <div className="flex justify-between text-sm text-gray-600 mt-1">
-              <span>$10</span>
+              <span>${minPrice}</span>
               <span>${priceRange}</span>
-              <span>$500</span>
+              <span>${maxPrice}</span>
             </div>
           </div>
         </aside>
 
         <main className="lg:w-3/4 w-full p-4">
-          <h1 className="text-4xl font-bold mb-8 text-gray-800">
-            Available Cars
-          </h1>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredCars.map((car) => (
               <CarCard key={car._id} car={car} />
