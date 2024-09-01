@@ -6,7 +6,7 @@ import Register from "../pages/Register";
 import AllCars from "../pages/AllCars";
 import About from "../pages/About";
 import Error from "../pages/Error";
-import UserDashboard from "../components/layout/userLayout/UserDashboardLayout";
+import UserDashboard from "../components/layout/UserDashboardLayout";
 import Overview from "../pages/user/Overview";
 import UpdateProfile from "../pages/user/UpdateProfile";
 import Booking from "../pages/user/Booking";
@@ -21,6 +21,7 @@ import MakeBooking from "../pages/user/MakeBooking";
 import TermsAndConditions from "../pages/TermsAndCondition";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfServices";
+import AdminDashboard from "../components/layout/AdminDashboardLayout";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -103,7 +104,7 @@ export const router = createBrowserRouter([
     path: "admin",
     element: (
       <PrivateRoute>
-        <UserDashboard />
+        <AdminDashboard />
       </PrivateRoute>
     ),
     children: [

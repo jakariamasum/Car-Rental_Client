@@ -1,14 +1,31 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../sidebar/Sidebar";
+import { logOut } from "../../redux/features/auth/authSlice";
+import { toast } from "sonner";
+import { useAppDispatch } from "../../redux/hooks";
 
 const UserDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    toast.warning("See you later!");
+    navigate("/");
+  };
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
+  const userLinks = [
+    { name: "Overview", path: "/user/overview" },
+    { name: "Booking Management", path: "/user/booking" },
+    { name: "Book A Car", path: "/user/make-booking" },
+    { name: "Payment Management", path: "/user/payment" },
+    { name: "Logout", path: "/", onClick: handleLogout },
+  ];
   return (
     <div className="flex h-screen overflow-hidden">
       <button
@@ -36,7 +53,7 @@ const UserDashboard: React.FC = () => {
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <Sidebar />
+        <Sidebar title="User" links={userLinks} />
       </div>
 
       <div className="flex-1 overflow-y-auto mt-12 lg:mt-0">
