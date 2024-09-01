@@ -3,8 +3,7 @@ import { baseApi } from "../../api/baseApi";
 type TBooking = {
   car: string;
   user: string;
-  startTime: string;
-  date: string;
+  status?: string;
 };
 const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,6 +33,13 @@ const bookingApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    confirmBooking: builder.mutation({
+      query: ({ id, data }: { id: string; data: Partial<TBooking> }) => ({
+        url: `/bookings/confirm-booking/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     deleteBooking: builder.mutation({
       query: (id: string) => ({
         url: `/bookings/my-bookings/${id}`,
@@ -49,4 +55,5 @@ export const {
   useGetUserBookingsQuery,
   useUpdateBookingMutation,
   useDeleteBookingMutation,
+  useConfirmBookingMutation,
 } = bookingApi;

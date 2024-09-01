@@ -17,9 +17,7 @@ interface Car {
 interface BookingDetails {
   NID: string;
   passport: string;
-  bookingDate: string;
   drivingLicense: string;
-  bookTime: string;
   additionalOptions: string[];
 }
 
@@ -34,13 +32,12 @@ const MakeBooking: React.FC = () => {
     NID: "",
     passport: "",
     drivingLicense: "",
-    bookTime: "",
-    bookingDate: "",
     additionalOptions: [],
   });
 
   const [isConfirmation, setIsConfirmation] = useState<boolean>(false);
   const { data } = useGetAllCarsQuery(undefined);
+  console.log(data?.data);
 
   useEffect(() => {
     if (data && data.data) {
@@ -48,12 +45,18 @@ const MakeBooking: React.FC = () => {
 
       if (searchTerm) {
         const lowerCaseSearchTerm = searchTerm.toLowerCase();
-        filteredCars = data.data.filter(
-          (car: TCar) =>
-            car.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-            car.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-            car.pricePerHour.toString().includes(lowerCaseSearchTerm)
-        );
+        filteredCars = data.data.filter((car: TCar) => {
+          // Ensure that car properties are defined before using them
+          const carName = car.name?.toLowerCase() || "";
+          const carDescription = car.description?.toLowerCase() || "";
+          const carPrice = car.pricePerHour?.toString() || "";
+
+          return (
+            carName.includes(lowerCaseSearchTerm) ||
+            carDescription.includes(lowerCaseSearchTerm) ||
+            carPrice.includes(lowerCaseSearchTerm)
+          );
+        });
       }
 
       setSearchResults(filteredCars);
@@ -75,8 +78,7 @@ const MakeBooking: React.FC = () => {
       const bookingData = {
         user: user!.id,
         car: selectedCar!._id,
-        date: bookingDetails?.bookingDate,
-        startTime: bookingDetails?.bookTime,
+        date: new Date(),
       };
       const res = await booking(bookingData);
       console.log(res);
@@ -221,32 +223,6 @@ const MakeBooking: React.FC = () => {
                   }
                   className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                 />
-                <input
-                  type="time"
-                  placeholder="Select booking time"
-                  value={bookingDetails.bookTime}
-                  required={true}
-                  onChange={(e) =>
-                    setBookingDetails({
-                      ...bookingDetails,
-                      bookTime: e.target.value,
-                    })
-                  }
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
-                <input
-                  type="date"
-                  placeholder="Select booking date"
-                  value={bookingDetails.bookingDate}
-                  required={true}
-                  onChange={(e) =>
-                    setBookingDetails({
-                      ...bookingDetails,
-                      bookingDate: e.target.value,
-                    })
-                  }
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                />
               </div>
               <button
                 onClick={handleBookingSubmit}
@@ -288,10 +264,7 @@ const MakeBooking: React.FC = () => {
               <strong className="font-semibold">Driving License:</strong>{" "}
               {bookingDetails.drivingLicense}
             </p>
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Booking date & time:</strong>{" "}
-              {bookingDetails.bookingDate} {bookingDetails.bookTime}
-            </p>
+
             <p className="text-base text-gray-800">
               <strong className="font-semibold">Additional Options:</strong>{" "}
               {bookingDetails.additionalOptions.join(", ")}
@@ -305,9 +278,7 @@ const MakeBooking: React.FC = () => {
                 NID: "",
                 passport: "",
                 drivingLicense: "",
-                bookTime: "",
                 additionalOptions: [],
-                bookingDate: "",
               });
               setSearchResults([]);
             }}

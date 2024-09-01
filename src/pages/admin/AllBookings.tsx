@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { useGetAllBookingsQuery } from "../../redux/features/booking/bookingApi";
+import {
+  useConfirmBookingMutation,
+  useGetAllBookingsQuery,
+} from "../../redux/features/booking/bookingApi";
 import ConfirmAlert from "../../components/confirmalert/ConfirmAlert";
+import { toast } from "sonner";
 
 type TBooking = {
   _id: string;
@@ -15,35 +19,47 @@ type TBooking = {
     status: string;
     transmission: string;
   };
+  status: string;
   createdAt: string;
 };
 
 const AllBookings: React.FC = () => {
   const { data, isLoading } = useGetAllBookingsQuery(undefined);
-
+  const [confirmBooking] = useConfirmBookingMutation();
   const [showConfirm, setShowConfirm] = useState(false);
   const [message, setMessage] = useState<string>("");
-  const [selectedBookingId, setSelectedBookingId] = useState<string | null>(
-    null
-  );
+  const [selectedBooking, setSelectedBooking] = useState<TBooking | null>(null);
+  const [status, setStatus] = useState<string>("");
 
-  const handleCancel = (id: string) => {
+  const handleCancel = (booking: TBooking) => {
     setMessage("Are you sure you want to cancel this booking?");
-    setSelectedBookingId(id);
+    setSelectedBooking(booking);
+    setStatus("canceled");
     setShowConfirm(true);
   };
 
-  const handleApprove = (id: string) => {
+  const handleApprove = (booking: TBooking) => {
     setMessage("Are you sure you want to approve this booking?");
-    setSelectedBookingId(id);
+    setStatus("approved");
+    setSelectedBooking(booking);
     setShowConfirm(true);
   };
 
-  const confirmReturnCar = () => {
-    if (selectedBookingId) {
-      console.log(`Action confirmed for booking ID: ${selectedBookingId}`);
+  const confirmReturnCar = async () => {
+    if (selectedBooking) {
+      try {
+        const res = await confirmBooking({
+          id: selectedBooking?._id,
+          data: { status },
+        });
+        console.log(res);
+        toast.success(`${status} successfully!`);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
       setShowConfirm(false);
-      setSelectedBookingId(null);
+      setSelectedBooking(null);
     }
   };
 
@@ -99,19 +115,19 @@ const AllBookings: React.FC = () => {
                     {booking.createdAt}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">
-                    {booking.car.status}
+                    {booking.status}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                    {booking.car.status === "available" && (
+                    {booking.status === "pending" && (
                       <>
                         <button
-                          onClick={() => handleApprove(booking._id)}
+                          onClick={() => handleApprove(booking)}
                           className="text-green-500 hover:text-green-700 bg-green-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-green-300 mr-2"
                         >
                           <FaCheckCircle />
                         </button>
                         <button
-                          onClick={() => handleCancel(booking._id)}
+                          onClick={() => handleCancel(booking)}
                           className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-300"
                         >
                           <FaTimesCircle />
