@@ -13,6 +13,8 @@ export interface UpdateProfileInputs {
   email: string;
   password: string;
   phone: string;
+  status: string;
+  role: string;
 }
 
 const UpdateProfile: React.FC = () => {

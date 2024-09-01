@@ -1,21 +1,26 @@
 import React, { useState } from "react";
-import { FaEdit, FaTrashAlt, FaPlus } from "react-icons/fa";
-import { useGetAllUsersQuery } from "../../redux/features/auth/authApi";
-import { useAppSelector } from "../../redux/hooks";
-import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { FaEdit, FaPlus, FaUser } from "react-icons/fa";
+import {
+  useGetAllUsersQuery,
+  useUpdateUserMutation,
+} from "../../redux/features/auth/authApi";
 import ConfirmAlert from "../../components/confirmalert/ConfirmAlert";
+import { GoBlocked } from "react-icons/go";
+import { toast } from "sonner";
+import { PiUserCheck } from "react-icons/pi";
+import { GrUserAdmin } from "react-icons/gr";
 
 type TUser = {
   _id: string;
   name: string;
   email: string;
   role: "admin" | "user";
+  status: string;
 };
 
 const AllUser: React.FC = () => {
-  const currentUser = useAppSelector(useCurrentUser);
   const { data, isLoading } = useGetAllUsersQuery(undefined);
-
+  const [updateUser] = useUpdateUserMutation();
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
   const [confirmTitle, setConfirmTitle] = useState("");
@@ -35,11 +40,40 @@ const AllUser: React.FC = () => {
     setShowConfirm(true);
   };
 
-  const handleDeleteUser = (id: string) => {
-    setConfirmTitle("Confirm to delete");
-    setConfirmMessage("Are you sure you want to delete this user?");
-    setConfirmAction(() => () => {
-      console.log("Delete user:", id);
+  const handleActiveOrBlockUser = async (user: TUser) => {
+    const status = user?.status === "active" ? "block" : "active";
+    setConfirmTitle(`Confirm to ${status}`);
+    setConfirmMessage(`Are you sure you want to ${status} this user?`);
+    const data = { status };
+    setConfirmAction(() => async () => {
+      console.log("Edit user:", user._id);
+      try {
+        const res = await updateUser({ id: user.email, data: data });
+        toast.success(`User ${status}`);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
+      setShowConfirm(false);
+    });
+    setShowConfirm(true);
+  };
+
+  const handleChangeRole = (user: TUser) => {
+    setConfirmTitle("Confirm to change role?");
+    const role = user?.role === "admin" ? "user" : "admin";
+    const data = { role };
+    setConfirmMessage(`Are you sure you want to make ${role}?`);
+    setConfirmAction(() => async () => {
+      try {
+        const res = await updateUser({ id: user.email, data: data });
+        toast.success(`Role changed`);
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong");
+      }
       setShowConfirm(false);
     });
     setShowConfirm(true);
@@ -80,6 +114,9 @@ const AllUser: React.FC = () => {
                 <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Role
                 </th>
+                <th className="px-6 py-3 text-left text-sm font-medium text-gray-600 uppercase tracking-wider">
+                  Status
+                </th>
                 <th className="px-6 py-3 text-right text-sm font-medium text-gray-600 uppercase tracking-wider">
                   Actions
                 </th>
@@ -90,7 +127,7 @@ const AllUser: React.FC = () => {
                 <tr
                   key={user._id}
                   className={`hover:bg-gray-50 ${
-                    user._id === currentUser?.userId ? "bg-blue-50" : ""
+                    user.status === "block" ? "bg-blue-50" : ""
                   }`}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -102,7 +139,24 @@ const AllUser: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.status}
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleActiveOrBlockUser(user)}
+                      className={`${
+                        user.status === "active"
+                          ? "text-yellow-500 bg-yellow-100"
+                          : "bg-green-100 text-green-500"
+                      } hover:text-blue-700  p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-2`}
+                    >
+                      {user.status === "active" ? (
+                        <GoBlocked />
+                      ) : (
+                        <PiUserCheck />
+                      )}
+                    </button>
                     <button
                       onClick={() => handleEditUser(user._id)}
                       className="text-blue-500 hover:text-blue-700 bg-blue-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-2"
@@ -110,10 +164,10 @@ const AllUser: React.FC = () => {
                       <FaEdit />
                     </button>
                     <button
-                      onClick={() => handleDeleteUser(user._id)}
-                      className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-300"
+                      onClick={() => handleChangeRole(user)}
+                      className=" bg-red-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-300"
                     >
-                      <FaTrashAlt />
+                      {user.role !== "admin" ? <GrUserAdmin /> : <FaUser />}
                     </button>
                   </td>
                 </tr>
