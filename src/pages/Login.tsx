@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       const res = await login(data).unwrap();
       const user = verifyToken(res.token) as TUser;
       dispatch(setUser({ user: user, token: res.token }));
-      toast.success("Logged in successfully!", { id: toastId, duration: 2000 });
+      toast.success("Logged in successfully!", { id: toastId, duration: 1000 });
       navigate(`/${user?.role}/dashboard`);
     } catch (err) {
       toast.error("Incorrect email or password. Please try again.", {
@@ -43,7 +43,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="mt-10 lg:mt-0 flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full mx-4 p-10 bg-white rounded-xl shadow-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
           Sign In
@@ -68,7 +68,7 @@ const Login: React.FC = () => {
                 errors.email
                   ? "border-red-500"
                   : emailFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
               htmlFor="email"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 emailFocused || errors.email
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -101,7 +101,7 @@ const Login: React.FC = () => {
                 errors.password
                   ? "border-red-500"
                   : passwordFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -109,7 +109,7 @@ const Login: React.FC = () => {
               htmlFor="password"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 passwordFocused || errors.password
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -124,7 +124,7 @@ const Login: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-3 text-lg font-semibold bg-purple-500 text-white rounded-md shadow-md hover:bg-purple-600 transition duration-300"
+            className="w-full py-3 text-lg font-semibold bg-indigo-700 text-white rounded-md shadow-md hover:bg-indigo-600 transition duration-300"
           >
             Sign In
           </button>
@@ -133,7 +133,7 @@ const Login: React.FC = () => {
         <p className="text-center mt-4">
           <Link
             to="/forgot-password"
-            className="text-purple-500 hover:underline"
+            className="text-indigo-700 hover:underline"
           >
             Forgot Password?
           </Link>
@@ -141,7 +141,7 @@ const Login: React.FC = () => {
 
         <p className="text-center mt-2">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-purple-500 hover:underline">
+          <Link to="/register" className="text-indigo-700 hover:underline">
             Sign Up Instead
           </Link>
         </p>

@@ -20,6 +20,12 @@ export const carsApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    returnCar: builder.mutation({
+      query: (id: string) => ({
+        url: `/cars/search/${id}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 

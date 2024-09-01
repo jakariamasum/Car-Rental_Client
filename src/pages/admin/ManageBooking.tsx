@@ -20,11 +20,13 @@ type TBooking = {
 };
 const ManageBooking: React.FC = () => {
   const { data, isLoading } = useGetAllBookingsQuery(undefined);
+  const [selectedId, setSelectedId] = useState<string>("");
+  // console.log()
 
   const [showConfirm, setShowConfirm] = useState(false);
 
   const handleReturnCar = (id: string) => {
-    console.log(id);
+    setSelectedId(id);
     setShowConfirm(true);
   };
 

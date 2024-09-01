@@ -18,6 +18,9 @@ import ManageCars from "../pages/admin/ManageCars";
 import PrivateRoute from "./PrivateRoute";
 import CarDetails from "../pages/CarDetails";
 import MakeBooking from "../pages/user/MakeBooking";
+import TermsAndConditions from "../pages/TermsAndCondition";
+import PrivacyPolicy from "../pages/PrivacyPolicy";
+import TermsOfService from "../pages/TermsOfServices";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -47,6 +50,18 @@ export const router = createBrowserRouter([
       {
         path: "details/:id",
         element: <CarDetails />,
+      },
+      {
+        path: "terms-and-conditions",
+        element: <TermsAndConditions />,
+      },
+      {
+        path: "privacy-policy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "terms-of-service",
+        element: <TermsOfService />,
       },
     ],
   },

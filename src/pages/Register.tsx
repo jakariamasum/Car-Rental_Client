@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -25,6 +26,11 @@ const Register: React.FC = () => {
   const [passwordFocused, setPasswordFocused] = useState<boolean>(false);
   const [confirmPasswordFocused, setConfirmPasswordFocused] =
     useState<boolean>(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const handleCheckboxChange = () => {
+    setTermsAccepted(!termsAccepted);
+  };
 
   const navigate = useNavigate();
   const [signUp] = useSignupMutation();
@@ -43,9 +49,9 @@ const Register: React.FC = () => {
       console.log(res);
       toast.success("Signed up successfully!", { id: toastId, duration: 2000 });
       navigate(`/login`);
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
-      toast.error("Error signing up. Please try again.", {
+      toast.error(err.data.message, {
         id: toastId,
         duration: 2000,
       });
@@ -53,7 +59,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="lg:mt-0 py-8 flex items-center justify-center min-h-screen bg-gray-100">
       <div className="max-w-md w-full mx-4 p-10 bg-white rounded-xl shadow-lg">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
           Sign Up
@@ -72,7 +78,7 @@ const Register: React.FC = () => {
                 errors.name
                   ? "border-red-500"
                   : nameFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -80,7 +86,7 @@ const Register: React.FC = () => {
               htmlFor="name"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 nameFocused || errors.name
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -109,7 +115,7 @@ const Register: React.FC = () => {
                 errors.email
                   ? "border-red-500"
                   : emailFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -117,7 +123,7 @@ const Register: React.FC = () => {
               htmlFor="email"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 emailFocused || errors.email
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -142,7 +148,7 @@ const Register: React.FC = () => {
                 errors.password
                   ? "border-red-500"
                   : passwordFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -150,7 +156,7 @@ const Register: React.FC = () => {
               htmlFor="password"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 passwordFocused || errors.password
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -178,7 +184,7 @@ const Register: React.FC = () => {
                 errors.confirmPassword
                   ? "border-red-500"
                   : confirmPasswordFocused
-                  ? "border-purple-500"
+                  ? "border-indigo-700"
                   : "border-gray-300"
               } focus:outline-none transition duration-300`}
             />
@@ -186,7 +192,7 @@ const Register: React.FC = () => {
               htmlFor="confirmPassword"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 confirmPasswordFocused || errors.confirmPassword
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -211,7 +217,7 @@ const Register: React.FC = () => {
               htmlFor="phone"
               className={`absolute left-3 text-sm text-gray-500 transition-all duration-300 transform ${
                 watch("phone")
-                  ? "-top-3.5 text-purple-500 bg-white px-1"
+                  ? "-top-3.5 text-indigo-700 bg-white px-1"
                   : "top-3"
               }`}
             >
@@ -226,13 +232,15 @@ const Register: React.FC = () => {
               })}
               type="checkbox"
               id="terms"
-              className="focus:ring-purple-500 h-4 w-4 text-purple-600 border-gray-300 rounded"
+              checked={termsAccepted}
+              onChange={handleCheckboxChange}
+              className="focus:ring-indigo-700 h-4 w-4 text-purple-600 border-gray-300 rounded"
             />
             <label htmlFor="terms" className="text-sm text-gray-600">
               I agree to the{" "}
               <Link
                 to="/terms-and-conditions"
-                className="text-purple-500 hover:underline"
+                className="text-indigo-700 hover:underline"
               >
                 Terms and Conditions
               </Link>
@@ -246,7 +254,12 @@ const Register: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-3 text-lg font-semibold bg-purple-500 text-white rounded-md shadow-md hover:bg-purple-600 transition duration-300"
+            className={`mt-4 px-4 py-2 rounded text-white ${
+              termsAccepted
+                ? "bg-blue-500 hover:bg-blue-600"
+                : "bg-gray-300 cursor-not-allowed"
+            }`}
+            disabled={!termsAccepted}
           >
             Sign Up
           </button>
@@ -254,7 +267,7 @@ const Register: React.FC = () => {
 
         <p className="text-center mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-purple-500 hover:underline">
+          <Link to="/login" className="text-indigo-700 hover:underline">
             Sign In Instead
           </Link>
         </p>
