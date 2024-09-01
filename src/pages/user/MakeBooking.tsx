@@ -5,6 +5,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useCreateBookingMutation } from "../../redux/features/booking/bookingApi";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 interface Car {
   _id: string;
@@ -12,6 +13,7 @@ interface Car {
   image: string;
   pricePerHour: number;
   description: string;
+  status: string;
 }
 
 interface BookingDetails {
@@ -34,7 +36,7 @@ const MakeBooking: React.FC = () => {
     drivingLicense: "",
     additionalOptions: [],
   });
-
+  const navigate = useNavigate();
   const [isConfirmation, setIsConfirmation] = useState<boolean>(false);
   const { data } = useGetAllCarsQuery(undefined);
   console.log(data?.data);
@@ -73,6 +75,9 @@ const MakeBooking: React.FC = () => {
   };
 
   const [booking] = useCreateBookingMutation();
+  const handlePreview = () => {
+    setIsConfirmation(true);
+  };
   const handleBookingSubmit = async () => {
     try {
       const bookingData = {
@@ -83,11 +88,11 @@ const MakeBooking: React.FC = () => {
       const res = await booking(bookingData);
       console.log(res);
       toast.success("Successfully booked");
+      navigate("/user/booking");
     } catch (error) {
       console.log(error);
       toast.error("Failed");
     }
-    setIsConfirmation(true);
   };
 
   return (
@@ -131,9 +136,9 @@ const MakeBooking: React.FC = () => {
                 </div>
                 <button
                   onClick={() => handleSelectCar(car)}
-                  className="mt-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold px-4 py-2 rounded-md hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+                  className="mt-4 bg-indigo-600  text-white font-bold px-4 py-2 rounded-md transition duration-300 shadow-lg hover:bg-indigo-500"
                 >
-                  Book Now
+                  See details
                 </button>
               </div>
             </div>
@@ -142,22 +147,28 @@ const MakeBooking: React.FC = () => {
       )}
 
       {selectedCar && !isConfirmation && (
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-          <h2 className="text-2xl font-bold mb-4">Car Details</h2>
-          <div className="flex flex-col md:flex-row">
+        <div className="bg-white p-8 rounded-2xl shadow-2xl mb-10 border border-gray-100 transform transition-transform duration-500  hover:shadow-3xl">
+          <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+            Car Details
+          </h2>
+          <div className="flex flex-col md:flex-row items-center">
             <img
               src={selectedCar.image}
               alt={selectedCar.name}
-              className="w-full md:w-1/2 h-auto object-cover rounded-md mb-4 md:mb-0 md:mr-4"
+              className="w-full md:w-1/2 h-auto object-cover rounded-lg mb-6 md:mb-0 md:mr-8 shadow-lg"
             />
             <div className="md:w-1/2">
-              <h3 className="text-xl font-bold mb-2">{selectedCar.name}</h3>
-              <p className="text-gray-700 mb-4">{selectedCar.description}</p>
-              <p className="text-lg font-semibold mb-4">
+              <h3 className="text-2xl font-bold mb-4 text-gray-800">
+                {selectedCar.name}
+              </h3>
+              <p className="text-gray-600 mb-4">{selectedCar.description}</p>
+              <p className="text-xl font-semibold text-indigo-600 mb-6">
                 ${selectedCar.pricePerHour} / hour
               </p>
-              <h4 className="text-lg font-bold mb-2">Additional Options</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <h4 className="text-lg font-bold mb-3 text-gray-800">
+                Additional Options
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {["Insurance", "GPS", "Child Seat"].map((option) => (
                   <label key={option} className="flex items-center">
                     <input
@@ -177,26 +188,28 @@ const MakeBooking: React.FC = () => {
                               ),
                         }));
                       }}
-                      className="mr-2"
+                      className="mr-2 accent-indigo-600"
                     />
                     {option}
                   </label>
                 ))}
               </div>
-              <h4 className="text-lg font-bold mb-2">Booking Form</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <h4 className="text-lg font-bold mb-3 text-gray-800">
+                Booking Form
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <input
                   type="text"
                   placeholder="NID"
                   value={bookingDetails.NID}
-                  required={true}
+                  required
                   onChange={(e) =>
                     setBookingDetails({
                       ...bookingDetails,
                       NID: e.target.value,
                     })
                   }
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <input
                   type="text"
@@ -208,27 +221,32 @@ const MakeBooking: React.FC = () => {
                       passport: e.target.value,
                     })
                   }
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <input
                   type="text"
                   placeholder="Driving License"
                   value={bookingDetails.drivingLicense}
-                  required={true}
+                  required
                   onChange={(e) =>
                     setBookingDetails({
                       ...bookingDetails,
                       drivingLicense: e.target.value,
                     })
                   }
-                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
               <button
-                onClick={handleBookingSubmit}
-                className="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition duration-300"
+                onClick={handlePreview}
+                disabled={!bookingDetails.NID || !bookingDetails.drivingLicense}
+                className={`w-full px-4 py-3 rounded-lg text-white font-bold shadow-md transition-all duration-300 ease-in-out transform ${
+                  bookingDetails.NID && bookingDetails.drivingLicense
+                    ? "bg-indigo-600 hover:bg-indigo-500 hover:-translate-y-1 hover:shadow-lg"
+                    : "bg-gray-400 cursor-not-allowed"
+                }`}
               >
-                Confirm Booking
+                Preview Booking
               </button>
             </div>
           </div>
@@ -236,55 +254,46 @@ const MakeBooking: React.FC = () => {
       )}
 
       {isConfirmation && (
-        <div className="bg-white p-8 rounded-lg shadow-xl mb-8 border border-gray-200">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-6">
+        <div className="bg-white p-10 rounded-2xl shadow-2xl mb-10 border border-gray-200 transform transition-transform duration-500 hover:scale-105 hover:shadow-3xl">
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-6 text-center tracking-wider">
             Booking Confirmation
           </h2>
-          <p className="text-lg text-gray-600 mb-6">
-            Thank you for your booking. Please review your details below.
+          <p className="text-lg text-gray-500 mb-8 text-center italic">
+            Please review your details below.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Car:</strong>{" "}
-              {selectedCar?.name}
-            </p>
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Price per hour:</strong> $
-              {selectedCar?.pricePerHour}
-            </p>
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">NID:</strong>{" "}
-              {bookingDetails.NID}
-            </p>
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Passport:</strong>{" "}
-              {bookingDetails.passport}
-            </p>
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Driving License:</strong>{" "}
-              {bookingDetails.drivingLicense}
-            </p>
-
-            <p className="text-base text-gray-800">
-              <strong className="font-semibold">Additional Options:</strong>{" "}
-              {bookingDetails.additionalOptions.join(", ")}
-            </p>
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg shadow-inner mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">Car:</strong>{" "}
+                {selectedCar?.name}
+              </p>
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">Price per hour:</strong> $
+                {selectedCar?.pricePerHour}
+              </p>
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">NID:</strong>{" "}
+                {bookingDetails.NID}
+              </p>
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">Passport:</strong>{" "}
+                {bookingDetails.passport}
+              </p>
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">Driving License:</strong>{" "}
+                {bookingDetails.drivingLicense}
+              </p>
+              <p className="text-lg text-gray-900">
+                <strong className="font-semibold">Additional Options:</strong>{" "}
+                {bookingDetails.additionalOptions.join(", ")}
+              </p>
+            </div>
           </div>
           <button
-            onClick={() => {
-              setSelectedCar(null);
-              setIsConfirmation(false);
-              setBookingDetails({
-                NID: "",
-                passport: "",
-                drivingLicense: "",
-                additionalOptions: [],
-              });
-              setSearchResults([]);
-            }}
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-md hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+            onClick={handleBookingSubmit}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-3 rounded-lg hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-600 shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-xl"
           >
-            Make Another Booking
+            Confirm Booking
           </button>
         </div>
       )}
