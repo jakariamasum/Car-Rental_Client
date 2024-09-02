@@ -9,18 +9,21 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: userInfo,
       }),
+      invalidatesTags: ["Auth"],
     }),
     getAllUsers: builder.query({
       query: () => ({
         url: `/auth`,
         method: "GET",
       }),
+      providesTags: ["Auth"],
     }),
     getSingleUser: builder.query({
       query: (id) => ({
         url: `/auth/${id}`,
         method: "GET",
       }),
+      providesTags: ["Auth"],
     }),
     updateUser: builder.mutation<
       UpdateProfileInputs,
@@ -31,6 +34,7 @@ const authApi = baseApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Auth"],
     }),
   }),
 });

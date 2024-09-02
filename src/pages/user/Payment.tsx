@@ -21,8 +21,7 @@ const Payment: React.FC = () => {
   const [updateBooking] = useUpdateBookingMutation();
   const { data } = useGetUserBookingsQuery(undefined);
   const approvedBooking: TBooking[] = data?.data?.filter(
-    (booking: TBooking) =>
-      booking.status === "approved" || booking.status === "returned"
+    (booking: TBooking) => booking.startTime !== null
   );
 
   const handlePayment = (bookingId: string, totalCost: number) => {
@@ -64,8 +63,7 @@ const Payment: React.FC = () => {
             </h2>
 
             <p className="text-gray-600 mb-4">
-              <strong>Start Time:</strong>{" "}
-              {new Date(booking.startTime).toLocaleString()}
+              <strong>Start Time:</strong> {booking?.startTime}
             </p>
             <p className="text-lg font-semibold text-green-700 mb-4">
               Total Cost: ${booking.totalCost}

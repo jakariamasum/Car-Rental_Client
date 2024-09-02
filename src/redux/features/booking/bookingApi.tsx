@@ -16,18 +16,21 @@ const bookingApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Bookings"],
     }),
     getUserBookings: builder.query({
       query: () => ({
         url: "/bookings/my-bookings",
         method: "GET",
       }),
+      providesTags: ["Bookings"],
     }),
     getAllBookings: builder.query({
       query: () => ({
         url: "/bookings",
         method: "GET",
       }),
+      providesTags: ["Bookings"],
     }),
     updateBooking: builder.mutation({
       query: ({ id, data }: { id: string; data: Partial<TBooking> }) => ({
@@ -35,6 +38,7 @@ const bookingApi = baseApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Bookings"],
     }),
     confirmBooking: builder.mutation({
       query: ({ id, data }: { id: string; data: Partial<TBooking> }) => ({
@@ -42,12 +46,14 @@ const bookingApi = baseApi.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: ["Bookings"],
     }),
     deleteBooking: builder.mutation({
       query: (id: string) => ({
         url: `/bookings/my-bookings/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Bookings"],
     }),
   }),
 });
