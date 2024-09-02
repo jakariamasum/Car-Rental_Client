@@ -1,4 +1,3 @@
-````markdown
 # RideX: A Car Rental Reservation System
 
 A user-friendly and responsive car rental reservation platform for customers and administrators. This system offers a smooth experience for browsing, booking, and managing cars, while providing administrators with tools to manage inventory and reservations.
@@ -55,6 +54,7 @@ A user-friendly and responsive car rental reservation platform for customers and
    git clone https://github.com/jakariamasum/Car-Rental_Client
    cd Car-Rental_Client
    ```
+
 ````
 
 2. Install dependencies:
@@ -94,7 +94,4 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-
-```
+````
