@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import { FaEdit, FaPlus, FaUser } from "react-icons/fa";
+import { FaPlus, FaUser } from "react-icons/fa";
 import {
   useGetAllUsersQuery,
   useUpdateUserMutation,
@@ -9,6 +10,8 @@ import { GoBlocked } from "react-icons/go";
 import { toast } from "sonner";
 import { PiUserCheck } from "react-icons/pi";
 import { GrUserAdmin } from "react-icons/gr";
+import { useForm } from "react-hook-form";
+import { useSignupMutation } from "../../redux/features/signup/signUp";
 
 type TUser = {
   _id: string;
@@ -19,25 +22,47 @@ type TUser = {
 };
 
 const AllUser: React.FC = () => {
+  const [createUser] = useSignupMutation();
   const { data, isLoading } = useGetAllUsersQuery(undefined);
   const [updateUser] = useUpdateUserMutation();
   const [showConfirm, setShowConfirm] = useState(false);
   const [confirmAction, setConfirmAction] = useState<() => void>(() => {});
   const [confirmTitle, setConfirmTitle] = useState("");
   const [confirmMessage, setConfirmMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+    },
+  });
 
   const handleAddUser = () => {
-    console.log("Add new user");
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
-  const handleEditUser = (id: string) => {
-    setConfirmTitle("Confirm to edit");
-    setConfirmMessage("Are you sure you want to edit this user?");
-    setConfirmAction(() => () => {
-      console.log("Edit user:", id);
-      setShowConfirm(false);
-    });
-    setShowConfirm(true);
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Loading");
+    try {
+      const res = await createUser(data);
+      console.log(res);
+      toast.success("User added!", { id: toastId, duration: 1000 });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong!", { id: toastId, duration: 1000 });
+    }
+    setIsModalOpen(false);
+    console.log(data);
   };
 
   const handleActiveOrBlockUser = async (user: TUser) => {
@@ -157,12 +182,7 @@ const AllUser: React.FC = () => {
                         <PiUserCheck />
                       )}
                     </button>
-                    <button
-                      onClick={() => handleEditUser(user._id)}
-                      className="text-blue-500 hover:text-blue-700 bg-blue-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300 mr-2"
-                    >
-                      <FaEdit />
-                    </button>
+
                     <button
                       onClick={() => handleChangeRole(user)}
                       className=" bg-red-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-300"
@@ -184,6 +204,91 @@ const AllUser: React.FC = () => {
           onConfirm={confirmAction}
           onCancel={() => setShowConfirm(false)}
         />
+      )}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-500 bg-opacity-75">
+          <div className="bg-white p-4 overflow-y-auto h-[calc(100vh-150px)] rounded-lg overflow-hidden shadow-lg max-w-lg w-full md:h-auto relative">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Name
+                  </label>
+                  <input
+                    {...register("name", { required: "Name is required" })}
+                    type="text"
+                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                    placeholder="Jon Doe"
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-xs">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Email
+                  </label>
+                  <input
+                    {...register("email", { required: "Email is required" })}
+                    type="email"
+                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                    placeholder="exam@domain.com"
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs">
+                      {errors.email.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                    })}
+                    type="password"
+                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                  />
+                  {errors.password && (
+                    <p className="text-red-500 text-xs">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">
+                    Phone
+                  </label>
+                  <input
+                    {...register("phone")}
+                    type="text"
+                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-4">
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
+                >
+                  Add User
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );
