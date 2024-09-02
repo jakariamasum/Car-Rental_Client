@@ -22,6 +22,7 @@ import TermsAndConditions from "../pages/TermsAndCondition";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfServices";
 import AdminDashboard from "../components/layout/AdminDashboardLayout";
+import ContactUs from "../pages/ContactUs";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -63,6 +64,18 @@ export const router = createBrowserRouter([
       {
         path: "terms-of-service",
         element: <TermsOfService />,
+      },
+      {
+        path: "contact-us",
+        element: <ContactUs />,
+      },
+      {
+        path: "book-car",
+        element: (
+          <PrivateRoute>
+            <MakeBooking />
+          </PrivateRoute>
+        ),
       },
     ],
   },

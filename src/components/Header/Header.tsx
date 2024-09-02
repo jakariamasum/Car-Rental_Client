@@ -56,33 +56,55 @@ const Header = () => {
           onClick={handleLinkClick}
           className={({ isActive }) =>
             isActive
-              ? "text-red-500 block py-2"
-              : "hover:text-red-500 block py-2"
+              ? "text-indigo-700 block py-2"
+              : "hover:text-indigo-700 block py-2"
           }
         >
-          HOME
+          Home
         </NavLink>
         <NavLink
           to="/about"
           onClick={handleLinkClick}
           className={({ isActive }) =>
             isActive
-              ? "text-red-500 block py-2"
-              : "hover:text-red-500 block py-2"
+              ? "text-indigo-700 block py-2"
+              : "hover:text-indigo-700 block py-2"
           }
         >
-          ABOUT
+          About
         </NavLink>
         <NavLink
           to="/all-cars"
           onClick={handleLinkClick}
           className={({ isActive }) =>
             isActive
-              ? "text-red-500 block py-2"
-              : "hover:text-red-500 block py-2"
+              ? "text-indigo-700 block py-2"
+              : "hover:text-indigo-700 block py-2"
           }
         >
           All Cars
+        </NavLink>
+        <NavLink
+          to="/book-car"
+          onClick={handleLinkClick}
+          className={({ isActive }) =>
+            isActive
+              ? "text-indigo-700 block py-2"
+              : "hover:text-indigo-700 block py-2"
+          }
+        >
+          Booking
+        </NavLink>
+        <NavLink
+          to="/contact-us"
+          onClick={handleLinkClick}
+          className={({ isActive }) =>
+            isActive
+              ? "text-indigo-700 block py-2"
+              : "hover:text-indigo-700 block py-2"
+          }
+        >
+          Contact
         </NavLink>
 
         {!user && (
@@ -91,8 +113,8 @@ const Header = () => {
             onClick={handleLinkClick}
             className={({ isActive }) =>
               isActive
-                ? "text-red-500 flex gap-1  py-2"
-                : "hover:text-red-500 flex gap-1  py-2"
+                ? "text-indigo-700 flex gap-1  py-2"
+                : "hover:text-indigo-700 flex gap-1  py-2"
             }
           >
             <UserCircleIcon className="h-6 w-6 text-black mr-1" />

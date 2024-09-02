@@ -1,105 +1,85 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
-import {
-  FaDollarSign,
-  FaCreditCard,
-  FaCheckCircle,
-  FaExclamationTriangle,
-} from "react-icons/fa";
-import { toast } from "sonner";
+import React from "react";
+import { useGetUserBookingsQuery } from "../../redux/features/booking/bookingApi";
 
-interface PaymentDetails {
-  amount: number;
+type TBooking = {
+  _id: string;
   status: string;
-}
+  startTime: string;
+  totalCost: number;
+  car: {
+    name: string;
+    image: string;
+    pricePerHour: number;
+  };
+};
 
 const Payment: React.FC = () => {
-  const [paymentDetails, setPaymentDetails] = useState<PaymentDetails>({
-    amount: 150,
-    status: "returned",
-  });
-  const [isPaymentSuccessful, setIsPaymentSuccessful] =
-    useState<boolean>(false);
+  const { data } = useGetUserBookingsQuery(undefined);
+  const approvedBooking: TBooking[] = data?.data?.filter(
+    (booking: TBooking) =>
+      booking.status === "approved" || booking.status === "returned"
+  );
 
-  const handlePayment = () => {
-    if (paymentDetails.status === "returned") {
-      setIsPaymentSuccessful(true);
-      toast.success("Payment processed successfully!");
-    } else {
-      toast.error(
-        "Car not returned yet. Please return the car before making a payment."
-      );
-    }
+  const handlePayment = (bookingId: string, totalCost: number) => {
+    console.log(
+      `Processing payment for booking ${bookingId} with amount $${totalCost}`
+    );
+  };
+
+  const handleReturnCar = (bookingId: string) => {
+    // Implement return car request logic here
+    console.log(`Requesting return for booking ${bookingId}`);
   };
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
-      <div className="max-w-lg mx-auto bg-white shadow-xl rounded-lg p-8">
-        <h2 className="text-3xl font-extrabold mb-6 text-gray-800">
-          Payment Management
-        </h2>
-        <div className="bg-blue-50 p-6 rounded-lg shadow-md mb-6">
-          <div className="flex items-center space-x-4 mb-4">
-            <FaDollarSign className="text-blue-600 text-3xl" />
-            <div>
-              <p className="text-xl font-semibold text-gray-800">
-                Total Amount Due
-              </p>
-              <p className="text-lg text-gray-600">
-                ${paymentDetails.amount.toFixed(2)}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center space-x-4 mb-4">
-            <FaCreditCard className="text-gray-600 text-3xl" />
-            <div>
-              <p className="text-xl font-semibold text-gray-800">
-                Payment Status
-              </p>
-              <p
-                className={`text-lg ${
-                  paymentDetails.status === "returned"
-                    ? "text-green-600"
-                    : "text-red-600"
-                }`}
+      <h1 className="text-3xl font-bold mb-8">Your Bookings</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {approvedBooking?.map((booking) => (
+          <div
+            key={booking._id}
+            className="bg-white p-6 rounded-lg shadow-lg flex flex-col"
+          >
+            <img
+              src={booking.car.image}
+              alt={booking.car.name}
+              className="w-full h-48 object-cover rounded-t-md mb-4"
+            />
+            <h2 className="text-xl font-bold text-gray-900 mb-2">
+              {booking.car.name}
+            </h2>
+
+            <p className="text-gray-600 mb-4">
+              <strong>Start Time:</strong>{" "}
+              {new Date(booking.startTime).toLocaleString()}
+            </p>
+            <p className="text-lg font-semibold text-green-700 mb-4">
+              Total Cost: ${booking.totalCost}
+            </p>
+            {booking.status === "approved" ? (
+              <button
+                onClick={() => handleReturnCar(booking._id)}
+                className="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold py-3 rounded-md hover:from-blue-600 hover:to-blue-700 transition duration-300 shadow-lg"
               >
-                {paymentDetails.status === "returned"
-                  ? "Car Returned"
-                  : "Car Not Returned"}
-              </p>
-            </div>
+                Request Return
+              </button>
+            ) : booking.status === "returned" ? (
+              <button
+                onClick={() => handlePayment(booking._id, booking.totalCost)}
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-3 rounded-md hover:from-green-600 hover:to-green-700 transition duration-300 shadow-lg"
+              >
+                Pay Now
+              </button>
+            ) : (
+              <button
+                disabled
+                className="w-full bg-gray-400 text-white font-bold py-3 rounded-md cursor-not-allowed"
+              >
+                Action Not Available
+              </button>
+            )}
           </div>
-        </div>
-
-        <button
-          onClick={handlePayment}
-          className={`w-full py-3 text-lg font-semibold rounded-lg shadow-md transition duration-300 ${
-            paymentDetails.status === "returned"
-              ? "bg-blue-600 text-white hover:bg-blue-700"
-              : "bg-gray-400 text-gray-200 cursor-not-allowed"
-          }`}
-          disabled={paymentDetails.status !== "returned"}
-        >
-          {paymentDetails.status === "returned" ? (
-            "Pay Now"
-          ) : (
-            <span className="flex items-center justify-center">
-              <FaExclamationTriangle className="text-red-500 text-xl mr-2" />
-              Please Return Car First
-            </span>
-          )}
-        </button>
-
-        {isPaymentSuccessful && (
-          <div className="mt-6 p-4 bg-green-100 text-green-800 rounded-lg shadow-md">
-            <div className="flex items-center">
-              <FaCheckCircle className="text-green-600 text-2xl mr-2" />
-              <p className="text-lg font-semibold">
-                Payment Completed Successfully!
-              </p>
-            </div>
-          </div>
-        )}
+        ))}
       </div>
     </div>
   );

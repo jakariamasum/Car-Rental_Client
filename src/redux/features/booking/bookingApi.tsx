@@ -4,6 +4,7 @@ type TBooking = {
   car: string;
   user: string;
   status?: string;
+  date: string;
 };
 const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
