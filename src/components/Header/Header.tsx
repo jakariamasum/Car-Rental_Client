@@ -1,14 +1,21 @@
-import { UserCircleIcon } from "@heroicons/react/16/solid";
+import { MoonIcon, SunIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
-import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppSelector } from "../../redux/hooks";
+import { useCurrentUser } from "../../redux/features/auth/authSlice";
+import { useTheme } from "../../context/ThemeContext";
 
 const Header = () => {
   const user = useAppSelector(useCurrentUser);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
   const handleLinkClick = () => {
     setMenuOpen(false);
+  };
+  console.log(theme);
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
   };
 
   return (
@@ -106,6 +113,18 @@ const Header = () => {
         >
           Contact
         </NavLink>
+        {/* Theme Switcher Icon */}
+        <button
+          onClick={toggleTheme}
+          className=" p-2 text-gray-700 z-50"
+          aria-label="Toggle Theme"
+        >
+          {theme === "light" ? (
+            <MoonIcon className="h-6 w-6" />
+          ) : (
+            <SunIcon className="h-6 w-6" />
+          )}
+        </button>
 
         {!user && (
           <NavLink
@@ -113,8 +132,8 @@ const Header = () => {
             onClick={handleLinkClick}
             className={({ isActive }) =>
               isActive
-                ? "text-indigo-700 flex gap-1  py-2"
-                : "hover:text-indigo-700 flex gap-1  py-2"
+                ? "text-indigo-700 flex gap-1 py-2"
+                : "hover:text-indigo-700 flex gap-1 py-2"
             }
           >
             <UserCircleIcon className="h-6 w-6 text-black mr-1" />

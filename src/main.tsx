@@ -7,14 +7,17 @@ import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/router.tsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "./context/ThemeContext.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <RouterProvider router={router} />
-      </PersistGate>
-    </Provider>
-    <Toaster richColors position="top-right" />
+    <ThemeProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <RouterProvider router={router} />
+        </PersistGate>
+      </Provider>
+      <Toaster richColors position="top-right" closeButton />
+    </ThemeProvider>
   </StrictMode>
 );
