@@ -24,6 +24,7 @@ const AdminDashboard: React.FC = () => {
     { name: "User Management", path: "/admin/users" },
     { name: "All Bookings", path: "/admin/bookings" },
     { name: "Return Car", path: "/admin/manage-bookings" },
+    { name: "Home", path: "/" },
     { name: "Manage Car", path: "/admin/manage-cars" },
     { name: "Logout", path: "/", onClick: handleLogout },
   ];

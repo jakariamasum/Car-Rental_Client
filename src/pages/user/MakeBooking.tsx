@@ -194,60 +194,68 @@ const MakeBooking: React.FC = () => {
                   </label>
                 ))}
               </div>
-              <h4 className="text-lg font-bold mb-3 text-gray-800">
-                Booking Form
-              </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                <input
-                  type="text"
-                  placeholder="NID"
-                  value={bookingDetails.NID}
-                  required
-                  onChange={(e) =>
-                    setBookingDetails({
-                      ...bookingDetails,
-                      NID: e.target.value,
-                    })
-                  }
-                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Passport"
-                  value={bookingDetails.passport}
-                  onChange={(e) =>
-                    setBookingDetails({
-                      ...bookingDetails,
-                      passport: e.target.value,
-                    })
-                  }
-                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-                <input
-                  type="text"
-                  placeholder="Driving License"
-                  value={bookingDetails.drivingLicense}
-                  required
-                  onChange={(e) =>
-                    setBookingDetails({
-                      ...bookingDetails,
-                      drivingLicense: e.target.value,
-                    })
-                  }
-                  className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-              <button
-                onClick={handlePreview}
-                disabled={!bookingDetails.NID || !bookingDetails.drivingLicense}
-                className={`w-full px-4 py-3 rounded-lg text-white font-bold shadow-md transition-all duration-300 ease-in-out transform ${
-                  bookingDetails.NID && bookingDetails.drivingLicense
-                    ? "bg-indigo-600 hover:bg-indigo-500 hover:-translate-y-1 hover:shadow-lg"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Preview Booking
-              </button>
+              {selectedCar?.status === "available" ? (
+                <>
+                  <h4 className="text-lg font-bold mb-3 text-gray-800">
+                    Booking Form
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <input
+                      type="text"
+                      placeholder="NID"
+                      value={bookingDetails.NID}
+                      required
+                      onChange={(e) =>
+                        setBookingDetails({
+                          ...bookingDetails,
+                          NID: e.target.value,
+                        })
+                      }
+                      className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Passport"
+                      value={bookingDetails.passport}
+                      onChange={(e) =>
+                        setBookingDetails({
+                          ...bookingDetails,
+                          passport: e.target.value,
+                        })
+                      }
+                      className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Driving License"
+                      value={bookingDetails.drivingLicense}
+                      required
+                      onChange={(e) =>
+                        setBookingDetails({
+                          ...bookingDetails,
+                          drivingLicense: e.target.value,
+                        })
+                      }
+                      className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    />
+                  </div>
+                  <button
+                    onClick={handlePreview}
+                    disabled={
+                      !bookingDetails.NID || !bookingDetails.drivingLicense
+                    }
+                    className={`w-full px-4 py-3 rounded-lg text-white font-bold shadow-md transition-all duration-300 ease-in-out transform ${
+                      bookingDetails.NID && bookingDetails.drivingLicense
+                        ? "bg-indigo-600 hover:bg-indigo-500 hover:-translate-y-1 hover:shadow-lg"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                  >
+                    Preview Booking
+                  </button>
+                </>
+              ) : (
+                <div className="text-red-500">Already booked</div>
+              )}
             </div>
           </div>
         </div>

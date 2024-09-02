@@ -24,6 +24,7 @@ const UserDashboard: React.FC = () => {
     { name: "Booking Management", path: "/user/booking" },
     { name: "Book A Car", path: "/user/make-booking" },
     { name: "Payment Management", path: "/user/payment" },
+    { name: "Home", path: "/" },
     { name: "Logout", path: "/", onClick: handleLogout },
   ];
   return (
