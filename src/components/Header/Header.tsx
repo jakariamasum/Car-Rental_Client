@@ -1,10 +1,10 @@
 import { MoonIcon, SunIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useTheme } from "../../context/ThemeContext";
-
+import logo from "../../../public/logo.jpg";
 const Header = () => {
   const user = useAppSelector(useCurrentUser);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -25,14 +25,9 @@ const Header = () => {
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-white shadow-md relative">
       <div className="flex items-center">
-        {/* Brand Logo */}
-        {/* <img
-          src={}
-          alt="RideX Rentals"
-          className="h-8 w-auto"
-        /> */}
-        <span className="ml-3 text-lg font-bold">RideX</span>
-        <span className="text-sm ml-1">CAR RENTALS</span>
+        <Link to="/">
+          <img src={logo} alt="RideX Rentals" className="size-14 " />
+        </Link>
       </div>
 
       <div className="lg:hidden flex items-center">
