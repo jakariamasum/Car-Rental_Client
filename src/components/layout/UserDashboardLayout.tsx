@@ -20,7 +20,7 @@ const UserDashboard: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const userLinks = [
-    { name: "Overview", path: "/user/overview" },
+    { name: "Overview", path: "/user/dashboard" },
     { name: "Booking Management", path: "/user/booking" },
     { name: "Book A Car", path: "/user/make-booking" },
     { name: "Payment Management", path: "/user/payment" },

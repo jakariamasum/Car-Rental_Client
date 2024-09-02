@@ -23,6 +23,7 @@ import PrivacyPolicy from "../pages/PrivacyPolicy";
 import TermsOfService from "../pages/TermsOfServices";
 import AdminDashboard from "../components/layout/AdminDashboardLayout";
 import ContactUs from "../pages/ContactUs";
+import Dashboard from "../pages/admin/Dashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -89,10 +90,6 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <>User dashboard</>,
-      },
-      {
-        path: "overview",
         element: <Overview />,
       },
       {
@@ -123,7 +120,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <>Admin dashboard</>,
+        element: <Dashboard />,
       },
       {
         path: "users",

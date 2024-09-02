@@ -20,6 +20,7 @@ const AdminDashboard: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
   const adminLinks = [
+    { name: "Dashboard", path: "/admin/dashboard" },
     { name: "User Management", path: "/admin/users" },
     { name: "All Bookings", path: "/admin/bookings" },
     { name: "Return Car", path: "/admin/manage-bookings" },
