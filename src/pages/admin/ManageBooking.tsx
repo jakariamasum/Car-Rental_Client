@@ -3,7 +3,9 @@ import { FaUndo } from "react-icons/fa";
 import ConfirmAlert from "../../components/confirmalert/ConfirmAlert";
 import { useGetAllBookingsQuery } from "../../redux/features/booking/bookingApi";
 import { Link } from "react-router-dom";
-
+import { useReturnCarMutation } from "../../redux/features/cars/carsApi";
+import moment from "moment";
+import { toast } from "sonner";
 type TBooking = {
   _id: string;
   user: {
@@ -11,14 +13,15 @@ type TBooking = {
     _id: string;
   };
   car: {
-    name: string;
     _id: string;
-    status: string;
-    transmission: string;
+    name: string;
+    fuelType: string;
   };
-  startTime: string;
+  date: string;
+  status: string;
 };
 const ManageBooking: React.FC = () => {
+  const [returnCar] = useReturnCarMutation();
   const { data, isLoading } = useGetAllBookingsQuery(undefined);
   const [selectedId, setSelectedId] = useState<string>("");
   // console.log()
@@ -30,14 +33,29 @@ const ManageBooking: React.FC = () => {
     setShowConfirm(true);
   };
 
-  const confirmReturnCar = () => {
+  const confirmReturnCar = async () => {
+    const data = {
+      endTime: moment(new Date()).utc().format("HH:mm"),
+    };
+    const toastId = toast.loading("Loading...");
+    try {
+      const res = await returnCar({ id: selectedId, data: data });
+      console.log(res);
+      toast.success("Successfully Return", { id: toastId });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong", { id: toastId });
+    }
     setShowConfirm(false);
   };
   if (isLoading) {
     <>Loading......</>;
   }
 
-  const cars: TBooking[] = data?.data;
+  const cars: TBooking[] = data?.data?.filter(
+    (booking: TBooking) =>
+      booking.status === "approved" || booking.status === "returned"
+  );
   console.log(cars);
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-gray-50 min-h-screen">
@@ -87,22 +105,22 @@ const ManageBooking: React.FC = () => {
                     {car?.user?.name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {car?.startTime}
+                    {moment(car?.date).format("MMMM Do YYYY")}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {car?.car?.transmission}
+                    {car?.car?.fuelType}
                   </td>
                   <td
                     className={`px-6 py-4 whitespace-nowrap text-sm font-semibold ${
-                      car?.car?.status === "available"
+                      car?.status === "approved"
                         ? "text-yellow-500"
                         : "text-green-500"
                     }`}
                   >
-                    {car?.car?.status}
+                    {car?.status}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    {car?.car?.status === "available" && (
+                    {car?.status === "approved" && (
                       <button
                         onClick={() => handleReturnCar(car._id)}
                         className="text-blue-500 hover:text-blue-700 bg-blue-100 p-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-300"

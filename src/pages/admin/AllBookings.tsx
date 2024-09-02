@@ -6,7 +6,7 @@ import {
 } from "../../redux/features/booking/bookingApi";
 import ConfirmAlert from "../../components/confirmalert/ConfirmAlert";
 import { toast } from "sonner";
-
+import moment from "moment";
 type TBooking = {
   _id: string;
   user: {
@@ -47,10 +47,12 @@ const AllBookings: React.FC = () => {
 
   const confirmReturnCar = async () => {
     if (selectedBooking) {
+      const startTime = moment(new Date()).utc().format("HH:mm");
       try {
+        const data = { status, startTime };
         const res = await confirmBooking({
           id: selectedBooking?._id,
-          data: { status },
+          data: data,
         });
         console.log(res);
         toast.success(`${status} successfully!`);

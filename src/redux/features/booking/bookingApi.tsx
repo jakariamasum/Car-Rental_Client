@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "../../api/baseApi";
 
 type TBooking = {
   car: string;
   user: string;
   status?: string;
-  date: string;
+  date: any;
+  startTime?: string;
 };
 const bookingApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

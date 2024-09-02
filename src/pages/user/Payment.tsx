@@ -1,5 +1,9 @@
 import React from "react";
-import { useGetUserBookingsQuery } from "../../redux/features/booking/bookingApi";
+import {
+  useGetUserBookingsQuery,
+  useUpdateBookingMutation,
+} from "../../redux/features/booking/bookingApi";
+import { toast } from "sonner";
 
 type TBooking = {
   _id: string;
@@ -14,6 +18,7 @@ type TBooking = {
 };
 
 const Payment: React.FC = () => {
+  const [updateBooking] = useUpdateBookingMutation();
   const { data } = useGetUserBookingsQuery(undefined);
   const approvedBooking: TBooking[] = data?.data?.filter(
     (booking: TBooking) =>
@@ -26,9 +31,18 @@ const Payment: React.FC = () => {
     );
   };
 
-  const handleReturnCar = (bookingId: string) => {
-    // Implement return car request logic here
-    console.log(`Requesting return for booking ${bookingId}`);
+  const handleReturnCar = async (bookingId: string) => {
+    const data = { status: "pending" };
+    const toastId = toast.loading("Loading..");
+    try {
+      console.log(`Requesting return for booking ${bookingId}`);
+      const res = await updateBooking({ id: bookingId, data: data });
+      console.log(res);
+      toast.success("Request send!", { id: toastId, duration: 1000 });
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong", { id: toastId, duration: 1000 });
+    }
   };
 
   return (
