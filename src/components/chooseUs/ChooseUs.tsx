@@ -3,28 +3,28 @@ import { FaThumbsUp, FaAward, FaHeadset, FaLock } from "react-icons/fa";
 const reasons = [
   {
     id: 1,
-    icon: <FaThumbsUp className="text-5xl text-red-500 mb-4" />,
+    icon: <FaThumbsUp className="text-5xl text-indigo-600 mb-4" />,
     title: "High Quality Service",
     description:
       "We provide the best quality service that meets all customer requirements.",
   },
   {
     id: 2,
-    icon: <FaAward className="text-5xl text-red-500 mb-4" />,
+    icon: <FaAward className="text-5xl text-indigo-600 mb-4" />,
     title: "Award Winning Company",
     description:
       "Our company has won numerous awards for its exceptional service and quality.",
   },
   {
     id: 3,
-    icon: <FaHeadset className="text-5xl text-red-500 mb-4" />,
+    icon: <FaHeadset className="text-5xl text-indigo-600 mb-4" />,
     title: "24/7 Customer Support",
     description:
       "Our customer support is available 24/7 to assist you with any inquiries.",
   },
   {
     id: 4,
-    icon: <FaLock className="text-5xl text-red-500 mb-4" />,
+    icon: <FaLock className="text-5xl text-indigo-600 mb-4" />,
     title: "Secure Payments",
     description:
       "We ensure all your transactions are secure and your data is protected.",
@@ -35,7 +35,7 @@ const ChooseUs = () => {
   return (
     <div className="container mx-auto py-12 px-4">
       <h2 className="text-4xl font-bold text-center mb-2 text-gray-800">
-        Why <span className="text-red-500">Choose</span> Us
+        Why <span className="text-indigo-600">Choose</span> Us
       </h2>
       <p className="text-center mb-12">
         Lorem ipsum dolor sit amet nsectetur cing elituspe ndisse suscipit

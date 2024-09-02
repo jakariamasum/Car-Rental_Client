@@ -29,7 +29,7 @@ const Featured = () => {
   return (
     <div className=" flex flex-col justify-center items-center gap-4 container mx-auto p-5">
       <h2 className="text-3xl md:text-5xl capitalize  font-semibold text-center">
-        Latest <span className="text-red-500">Cars</span>
+        Latest <span className="text-indigo-600">Cars</span>
       </h2>
       <p className="text-center ">
         A friendly collection for you. You can have a look and choose the best
@@ -42,7 +42,7 @@ const Featured = () => {
       </div>
       <Link
         to="/all-cars"
-        className="px-6 rounded-md py-2 mt-2 bg-purple-500 text-white hover:bg-black"
+        className="px-6 rounded-md py-2 mt-2 bg-indigo-500 text-white hover:bg-black"
       >
         See more
       </Link>

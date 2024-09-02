@@ -16,6 +16,10 @@ const Header = () => {
 
   const toggleTheme = () => {
     setTheme(theme === "light" ? "dark" : "light");
+    document.documentElement.setAttribute(
+      "data-theme",
+      theme === "light" ? "dark" : "light"
+    );
   };
 
   return (

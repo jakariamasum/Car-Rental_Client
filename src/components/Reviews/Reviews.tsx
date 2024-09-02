@@ -37,7 +37,7 @@ const Reviews = () => {
   return (
     <div className="container mx-auto py-12">
       <h2 className="text-3xl font-bold text-center mb-2">
-        What Our <span className="text-red-500">Customers Say</span>
+        What Our <span className="text-indigo-600">Customers Say</span>
       </h2>
       <p className="text-center mb-16">
         Discover the success stories that speak louder than words! Hear
