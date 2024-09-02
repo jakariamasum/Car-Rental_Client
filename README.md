@@ -50,18 +50,15 @@ A user-friendly and responsive car rental reservation platform for customers and
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/jakariamasum/Car-Rental_Client
    cd Car-Rental_Client
    ```
 
-````
-
 2. Install dependencies:
-
    ```bash
    npm install
-
    ```
 
 ## Running the Application
@@ -94,4 +91,3 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-````
