@@ -63,14 +63,14 @@ A user-friendly and responsive car rental reservation platform for customers and
 
 ## Running the Application
 
-Start the application:
+3. Start the application:
 
-```bash
-cd Car-Rental_Client
-npm run dev
-```
+   ```bash
+   cd Car-Rental_Client
+   npm run dev
+   ```
 
-3. Open your browser and go to `http://localhost:5173`.
+4. Open your browser and go to `http://localhost:5173`.
 
 ## Future Enhancements
 
