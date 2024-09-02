@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
@@ -36,7 +35,7 @@ const ManageCars: React.FC = () => {
   const { data, isLoading } = useGetAllCarsQuery(undefined);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [currentCar, setCurrentCar] = useState<TCar | null>(null);
+  const [, setCurrentCar] = useState<TCar | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const {
     handleSubmit,
@@ -252,180 +251,174 @@ const ManageCars: React.FC = () => {
 
       {/* Modal for adding/editing car */}
       {isModalOpen && (
-        <Modal onClose={closeModal}>
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            {isEditing ? "Edit Car" : "Add New Car"}
-          </h3>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <Modal onClose={closeModal} title={isEditing ? "Edit Car" : "Add Car"}>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Name
                 </label>
                 <input
-                  type="text"
                   {...register("name", { required: "Name is required" })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.name.message}
-                  </p>
+                  <p className="text-red-500 text-xs">{errors.name.message}</p>
                 )}
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Description
                 </label>
                 <input
-                  type="text"
                   {...register("description", {
                     required: "Description is required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.description && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs">
                     {errors.description.message}
                   </p>
                 )}
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Color
                 </label>
                 <input
-                  type="text"
                   {...register("color", { required: "Color is required" })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.color && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.color.message}
-                  </p>
+                  <p className="text-red-500 text-xs">{errors.color.message}</p>
                 )}
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Year
                 </label>
                 <input
-                  type="text"
                   {...register("year", { required: "Year is required" })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.year && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.year.message}
-                  </p>
+                  <p className="text-red-500 text-xs">{errors.year.message}</p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
-                  Price Per Hour
+                <label className="block text-sm font-medium text-gray-700">
+                  Fuel Type
                 </label>
                 <input
-                  type="number"
-                  {...register("pricePerHour", {
-                    required: "Price per hour is required",
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
-                />
-                {errors.pricePerHour && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.pricePerHour.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
-                  Fuel-type
-                </label>
-                <input
-                  type="text"
                   {...register("fuelType", {
                     required: "Fuel type is required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.fuelType && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs">
                     {errors.fuelType.message}
                   </p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Mileage
                 </label>
                 <input
+                  {...register("mileage", { required: "Mileage is required" })}
                   type="text"
-                  {...register("mileage", {
-                    required: "Mileage is required",
-                  })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.mileage && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs">
                     {errors.mileage.message}
                   </p>
                 )}
               </div>
+
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Transmission
                 </label>
                 <input
-                  type="text"
                   {...register("transmission", {
                     required: "Transmission is required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.transmission && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs">
                     {errors.transmission.message}
                   </p>
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Price per Hour
+                </label>
+                <input
+                  {...register("pricePerHour", {
+                    required: "Price per hour is required",
+                  })}
+                  type="number"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                />
+                {errors.pricePerHour && (
+                  <p className="text-red-500 text-xs">
+                    {errors.pricePerHour.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
                   Features (comma separated)
                 </label>
                 <input
-                  type="text"
                   {...register("features", {
                     required: "Features are required",
                   })}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  type="text"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {errors.features && (
-                  <p className="text-red-500 text-sm mt-1">
+                  <p className="text-red-500 text-xs">
                     {errors.features.message}
                   </p>
                 )}
               </div>
               <div></div>
               <div>
-                <label className="block text-sm font-medium text-gray-600 mb-2">
+                <label className="block text-sm font-medium text-gray-700">
                   Image
                 </label>
                 <input
                   type="file"
                   onChange={handleImageUpload}
-                  className="w-full p-2 border border-gray-300 rounded-lg"
+                  className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
                 {imageUrl && (
                   <img
                     src={imageUrl}
                     alt="Car"
-                    className="mt-2 h-32 w-32 object-cover"
+                    className="mt-2 h-32 w-full object-cover rounded-md"
                   />
                 )}
               </div>
             </div>
 
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-4">
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all duration-300"
@@ -435,7 +428,7 @@ const ManageCars: React.FC = () => {
               <button
                 type="button"
                 onClick={closeModal}
-                className="ml-4 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300"
+                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-all duration-300"
               >
                 Cancel
               </button>

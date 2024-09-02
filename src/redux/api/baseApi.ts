@@ -4,6 +4,7 @@ import { RootState } from "../store";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
+    // baseUrl: "https://car-rental-three-kappa.vercel.app/api",
     baseUrl: "http://localhost:5000/api",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;

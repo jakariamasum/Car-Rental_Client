@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetSingleCarQuery } from "../redux/features/cars/carsApi";
 
 const CarDetails: React.FC = () => {
@@ -24,6 +24,7 @@ const CarDetails: React.FC = () => {
           <div className="relative overflow-hidden rounded-lg shadow-md">
             <img
               src={
+                car?.image ||
                 "https://revus.tm-colors.info/dealer/wp-content/uploads/revslider/rewon-home-page-slider/auto-slide-2-min.png"
               }
               alt={car?.name}
@@ -110,11 +111,15 @@ const CarDetails: React.FC = () => {
         </p>
       </div>
 
-      <div className="text-center">
-        <button className="bg-red-500 text-white text-lg font-bold px-8 py-4 rounded-lg hover:bg-purple-500 transition duration-300 shadow-lg">
-          Book Now
-        </button>
-      </div>
+      {car?.status === "available" && (
+        <div className="text-center">
+          <Link to="/user/make-booking">
+            <button className="bg-indigo-600 text-white text-lg font-bold px-8 py-4 rounded-lg hover:bg-purple-500 transition duration-300 shadow-lg">
+              Book Now
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
